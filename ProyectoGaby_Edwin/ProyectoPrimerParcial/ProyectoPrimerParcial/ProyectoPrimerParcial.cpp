@@ -1,14 +1,20 @@
+
 /************************************************
 *UNIVERSIDAD DE LAS FUERZAS ARMADAS "ESPE"      *
 *INTEGRANTES: GABRIELA ROSERO   EDWIN ASTUDILLO *
 *CARRERA: INGENIERIA EN SISTEMAS E INFORMÁTICA  *
 *INGENIERO: ING FERNANDO SOLIS                  *
 *Fecha de creación: 2017-11-11                  *
-*Fecha de modificación: 2017-11-13              *
+*Fecha de modificación: 2017-11-20              *
 *************************************************/
 
+//permite utilizar funciones como strcpy() para que no salga un warning (Problema de la actualización reciente de VS)
+#define _CRT_SECURE_NO_WARNINGS
+/* #ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS
+#endif*/
 
-
+#include "stdafx.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
@@ -21,8 +27,31 @@
 #include <windows.h>
 #include <time.h>
 # include <fstream>
+using namespace std; 
+# define numCuartos 10
 
-using namespace std;
+struct Persona {
+	string nombre = "";
+	string apellido = "";
+	long cedula = 0;
+};
+
+struct Fecha {
+	int dia = 0;
+	int mes = 0;
+	int año = 0;
+};
+
+struct Habitacion {
+	struct Persona cliente;
+	struct Fecha fechaIngreso;
+	struct Fecha fechaSalida;
+	int numHabitacion = 0;
+	bool estadoHabitacion = false;
+	struct Habitacion *sig;
+	struct Habitacion *ant;
+};
+
 //Prototipos
 void gotoxy(int x, int y);
 void AjustarVentana(int Ancho, int Alto);
@@ -43,6 +72,10 @@ bool validarCorreo(char *corre, char **correos, int tam);
 char* generarCorreo(char* nombre, char* nombre2, char* apP, char *apM, char **correos, int tam, int sA);
 char * convertirStringAChar(string dato);
 string convertirCharAString(char *dato);
+Habitacion* creandoHabitaciones(Habitacion *hotel, int numHabitacion);
+void imprimirHabitacionesDisponibles(Habitacion *hotel);
+bool cuartoDisponible(Habitacion *hotel, int num);
+
 int  AyudaF1();
 //***************************************PRINCIPAL*****************************************************
 int main()
@@ -90,13 +123,24 @@ int main()
 	int opcAd = 0;
 	int y2 = 4;
 	int auxF = 0;
+	int opc;
 	long cedulita;
 	bool banderaF = false;
 	char c , ayu ;//Variable auxiliar que guardara los caracteres de los comandos
+	Habitacion *hotel = NULL;
+	bool banderaNumero = false;
+	Habitacion clienteactual;
+	string auxDato;
+
 	system("COLOR F0");
 	Cargando();
 	login(cedula, clave, cont);
 	AjustarVentana(200, 58);
+	//creando las habitaciones 
+	do {
+		hotel = creandoHabitaciones(hotel, cont);
+		cont++;
+	} while (cont != numCuartos);
 	do {
 		limpiar();
 		Cabecera2();
@@ -198,30 +242,33 @@ int main()
 					}
 					if (c == 0)//f1
 					{
-						ShellExecute(NULL, TEXT("open"), TEXT("C:\\Users\\DANIELAROSERO\\Desktop\\ProyectoGaby_Edwin\\ProyectoPrimerParcial\\ayuda.chm"), NULL, NULL, SW_SHOWNORMAL);
+						ShellExecute(NULL, TEXT("open"), TEXT("C:\\Users\\DANIELAROSERO\\Documents\\GitHub\\Proyecto1\\ProyectoGaby_Edwin\\ProyectoPrimerParcial\\ayuda.chm"), NULL, NULL, SW_SHOWNORMAL);
 						
 					}
 					if (c == 13) {//Segun el codigo ASCII el valor 13 representa a Enter.
 						if (y == 4) {
-							//Altas
 							limpiar();
-							cout << "***********************Registrar Cliente*************************" << endl;
-							/*
-							Aquí va código de registro
-							*/
-							
+							cout << "***********************Imagen en consola*************************" << endl;
+							ShellExecute(NULL, TEXT("open"), TEXT("C:\\Users\\DANIELAROSERO\\Documents\\GitHub\\Proyecto1\\ProyectoGaby_Edwin\\ProyectoPrimerParcial\\Untitled1.exe"), NULL, NULL, SW_SHOWNORMAL);
+							//codigo inestable, solo en dev me esta funcionando.
 
 						}
 							if (y == 19) {
-								//Bajas
-								limpiar();
-								cout << "***********************Ingresar***************************" << endl;
-								/*Aquí va código de ingreso a cada habitación con fecha*/
+								cout << "***********************Habitaciones***************************" << endl;
+								do {
+									opc = 0;
+									limpiar();
+									/**************************************************************/
+									cout << "INGRESANDO DATOS" << endl;
+									imprimirHabitacionesDisponibles(hotel);
+									/***********************************************************/
+									cout << "ingrese 1 para registrar otro cliente";
+									cin >> opc;
+								} while (opc == 1);
 
 							}
 
 							if (y == 34) {
-								//Consultar
 								limpiar();
 								cout << "***********************Eliminar***************************" << endl;
 								/*Aquí va código para eliminación del ingreso.*/
@@ -230,7 +277,6 @@ int main()
 
 
 						if (y == 49) {
-							//Consultar
 							limpiar();
 							cout << "***********************Buscar Cliente***************************" << endl;
 							/*Aquí va código para busqueda de cliente.*/
@@ -327,7 +373,7 @@ void Cabecera() {
 	gotoxy(32, 1);
 	printf("UNIVERSIDAD DE LAS FUERZAS ARMADAS - ESPE");
 	gotoxy(5, 5);
-	printf("Reg.Cliente");
+	printf("Imagen");
 	gotoxy(20, 5);
 	printf("Ingresar");
 	gotoxy(35, 5);
@@ -384,7 +430,7 @@ void colorPrinc(int a) {
 		a = 7;
 		break;
 	}
-	string Menu[7] = { "Reg.Cliente", "Ingresar", "Eliminar","Buscar","Generar QR","Generar PDF","Regresar" };
+	string Menu[7] = { "Imagen", "Ingresar", "Eliminar","Buscar","Generar QR","Generar PDF","Regresar" };
 	color(240);
 	printf("\20");
 	cout << Menu[a] << endl;
@@ -740,4 +786,76 @@ char * convertirStringAChar(string dato) {
 	char *auxDato = new char[dato.size()];
 	strcpy(auxDato, dato.c_str());
 	return auxDato;
+}
+//crea las habitaciones del hotel 
+Habitacion* creandoHabitaciones(Habitacion *hotel, int numCuarto) {
+
+	Habitacion *nuevo = new(Habitacion);
+	if (hotel == NULL) {
+		nuevo->sig = NULL;
+		nuevo->ant = NULL;
+		nuevo->numHabitacion = numCuarto;
+		hotel = nuevo;
+	}
+	else {
+		Habitacion *aux = hotel;
+		while (aux->sig != NULL) {
+			aux = aux->sig;
+		}
+		nuevo->numHabitacion = numCuarto;
+		nuevo->sig = NULL;
+		nuevo->ant = aux;
+		aux->sig = nuevo;
+	}
+	return hotel;
+}
+//comprueba si la habitacion esta disponible
+bool cuartoDisponible(Habitacion *hotel, int num) {
+
+	Habitacion *aux = hotel;
+	while (aux != NULL) {
+
+		if (aux->numHabitacion == num) {
+			if (aux->estadoHabitacion == false) {
+				return false; //disponible
+			}
+			else {
+				return true; //ocupado
+			}
+		}
+		aux = aux->sig;
+
+	}
+	return false;
+}
+
+//imprime las habitaciones ocupadas y disponibles
+void imprimirHabitacionesDisponibles(Habitacion *hotel) {
+
+	Habitacion *aux = hotel;
+	int x = 5;
+	int y = 5;
+
+	while (aux != NULL) {
+
+		if (aux->estadoHabitacion == true) {//ocupado
+
+			cout << endl << "**************" << endl;
+			cout << "* HABITACION *" << endl;
+			cout << "* OCUPADA *" << endl;
+			cout << "*     " << aux->numHabitacion << "       *" << endl;
+			cout << "**************" << endl;
+
+		}
+		else {//disponible
+			cout << endl << "**************" << endl;
+			cout << "* HABITACION *" << endl;
+			cout << "* DISPONIBLE *" << endl;
+			cout << "*      " << aux->numHabitacion << "     *" << endl;
+			cout << "**************" << endl;
+		}
+
+		aux = aux->sig;
+	}
+
 }
