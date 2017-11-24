@@ -68,6 +68,8 @@ long ValidarCed();
 char* leerClave(char* contrasenia);
 void login(long *usuarios, char**claves, int tam);
 bool cedulaRepetida(long ced, long *cedulas, int tam);
+void agregandoCliente(Habitacion *hotel, Habitacion *clienteactual);
+Historial* agregarHistorial(Historial *historial, Habitacion clienteactual);
 bool validarCorreo(char *corre, char **correos, int tam);
 char* generarCorreo(char* nombre, char* nombre2, char* apP, char *apM, char **correos, int tam, int sA);
 char * convertirStringAChar(string dato);
@@ -141,6 +143,19 @@ int main()
 		hotel = creandoHabitaciones(hotel, cont);
 		cont++;
 	} while (cont != numCuartos);
+	//ingresando datos
+	do {
+		opc = 0;
+		limpiar();
+		/**************************************************************/
+		cout << "INGRESANDO DATOS" << endl;
+		imprimirHabitacionesDisponibles(hotel);
+		agregandoCliente(hotel, &clienteactual);
+		historial = agregarHistorial(historial, clienteactual);
+		/***********************************************************/
+		cout << "ingrese 1 para registrar otro cliente";
+		cin >> opc;
+	} while (opc == 1);
 	do {
 		limpiar();
 		Cabecera2();
@@ -322,6 +337,242 @@ int main()
 	system("pause");
 	return 0;
 }
+void agregandoCliente(Habitacion *hotel, Habitacion *clienteactual) {
+	char *auxNombre = (char*)malloc(20 * sizeof(char*));
+	char *auxApellido = (char*)malloc(20 * sizeof(char*));
+
+
+	Habitacion *auxHotel = hotel;
+	int aux = 0;
+	int auxNumHabitacion = 0;
+	long auxCedula = 0;
+	string auxDato = "";
+	bool bandera;
+	bool banderaNumero;
+	do {
+		bandera = false;
+		do {
+			banderaNumero = false;
+			cout << "Ingrese la habitación:";
+			cin >> auxDato;
+
+			banderaNumero = soloNumeros(auxDato);
+			if (!banderaNumero) {
+				cout << "  NO EXISTE LA HABITACION  " << endl;
+				Sleep(1500);
+				limpiar();
+			}
+		} while (!banderaNumero);
+
+		auxNumHabitacion = atoi((auxDato).c_str()); //convierte de string a int 
+
+		if (auxNumHabitacion>0 && auxNumHabitacion<numCuartos) {
+			bandera = cuartoDisponible(hotel, auxNumHabitacion);
+			if (bandera == true) {
+				cout << endl << "LA HABITACIÓN ESTA OCUPADA  " << endl;
+				cout << endl << "ELIJA OTRA HABITACIÓN " << endl;
+			}
+		}
+		else {
+			cout << "EL HOTEL TIENE  " << numCuartos - 1 << " CUARTOS" << endl;
+			cout << "INGRESE OTRO CUARTO" << endl;
+			bandera = true;
+		}
+	} while (bandera != false);
+
+
+
+	while (auxHotel != NULL) {
+
+		if (auxHotel->numHabitacion == auxNumHabitacion) {
+			cout << endl << "Ingrese el nombre: ";
+			sololetras(*(&(auxNombre)));
+			auxHotel->cliente.nombre = convertirCharAString((*(&(auxNombre))));
+			//cin >> auxHotel->cliente.nombre;
+			cout << endl << "Ingrese el Apellido: ";
+			sololetras(*(&(auxApellido)));
+			auxHotel->cliente.apellido = convertirCharAString((*(&(auxApellido))));
+			//cin >> auxHotel->cliente.apellido;
+
+			// ingreso cédula y validando
+			do {
+				auxCedula = validarCed();
+			} while (auxCedula == 0);
+			auxHotel->cliente.cedula = auxCedula;
+			//cin >> auxHotel->cliente.cedula;
+
+			do {
+				banderaNumero = false;
+				cout << endl << "Ingrese el año : ";
+				cin >> auxDato;
+				banderaNumero = soloNumeros(auxDato);
+				if (!banderaNumero) {
+					cout << " ANIO INVALIDO " << endl;
+					Sleep(1500);
+					limpiar();
+				}
+				aux = atoi((auxDato).c_str());
+				if (aux<2017) {
+					banderaNumero = false;
+				}
+			} while (!banderaNumero);
+			aux = atoi((auxDato).c_str()); //convierte de string a int 
+			auxHotel->fechaIngreso.año = aux;
+			//cin >> auxHotel->fechaIngreso.año;
+			do {
+				banderaNumero = false;
+				cout << endl << "Ingrese el mes de entrada: ";
+				cin >> auxDato;
+				banderaNumero = soloNumeros(auxDato);
+				if (!banderaNumero) {
+					cout << " MES INVALIDO " << endl;
+					Sleep(1500);
+					limpiar();
+				}
+				aux = atoi((auxDato).c_str());
+				if (aux<0 || aux>12) {
+					banderaNumero = false;
+				}
+			} while (!banderaNumero);
+			aux = atoi((auxDato).c_str()); //convierte de string a int 
+			auxHotel->fechaIngreso.mes = aux;
+			//cin >> auxHotel->fechaIngreso.mes;
+
+			do {
+				banderaNumero = false;
+				cout << endl << "Ingrese el dia Entrada: ";
+				cin >> auxDato;
+				banderaNumero = soloNumeros(auxDato);
+				if (!banderaNumero) {
+					cout << " DIA INVALIDO " << endl;
+					Sleep(1500);
+					limpiar();
+				}
+				aux = atoi((auxDato).c_str());
+				if (aux<0 || aux>31) {
+					banderaNumero = false;
+				}
+			} while (!banderaNumero);
+			aux = atoi((auxDato).c_str()); //convierte de string a int 
+			auxHotel->fechaIngreso.dia = aux;
+			//cin >> auxHotel->fechaIngreso.dia;
+			do {
+				banderaNumero = false;
+				cout << endl << "Ingrese el año salida: ";
+				cin >> auxDato;
+				banderaNumero = soloNumeros(auxDato);
+				if (!banderaNumero) {
+					cout << " ANIO INVALIDO " << endl;
+					Sleep(1500);
+					limpiar();
+				}
+				aux = atoi((auxDato).c_str());
+				if (aux<2017) {
+					banderaNumero = false;
+				}
+			} while (!banderaNumero);
+			aux = atoi((auxDato).c_str()); //convierte de string a int 
+			auxHotel->fechaSalida.año = aux;
+			//cin >> auxHotel->fechaSalida.año;
+
+			do {
+				banderaNumero = false;
+				cout << endl << "Ingrese el mes salida: ";
+				cin >> auxDato;
+				banderaNumero = soloNumeros(auxDato);
+				if (!banderaNumero) {
+					cout << " MES INVALIDO " << endl;
+					Sleep(1500);
+					limpiar();
+				}
+				aux = atoi((auxDato).c_str());
+				if (aux<0 || aux>12) {
+					banderaNumero = false;
+				}
+			} while (!banderaNumero);
+			aux = atoi((auxDato).c_str()); //convierte de string a int 
+			auxHotel->fechaSalida.mes = aux;
+			//cin >> auxHotel->fechaSalida.mes;
+			do {
+				banderaNumero = false;
+				cout << endl << "Ingrese el dia salida: ";
+				cin >> auxDato;
+				banderaNumero = soloNumeros(auxDato);
+				if (!banderaNumero) {
+					cout << " DIA INVALIDO " << endl;
+					Sleep(1500);
+					limpiar();
+				}
+				aux = atoi((auxDato).c_str());
+				if (aux<0 || aux>31) {
+					banderaNumero = false;
+				}
+			} while (!banderaNumero);
+			aux = atoi((auxDato).c_str()); //convierte de string a int 
+			auxHotel->fechaSalida.dia = aux;
+			//cin >> auxHotel->fechaSalida.dia;
+			auxHotel->estadoHabitacion = true;
+			//guardando en el historial
+			clienteactual->cliente.nombre = auxHotel->cliente.nombre;
+			clienteactual->cliente.apellido = auxHotel->cliente.apellido;
+			clienteactual->cliente.cedula = auxHotel->cliente.cedula;
+			clienteactual->fechaIngreso.año = auxHotel->fechaIngreso.año;
+			clienteactual->fechaIngreso.mes = auxHotel->fechaIngreso.mes;
+			clienteactual->fechaIngreso.dia = auxHotel->fechaIngreso.dia;
+			clienteactual->fechaSalida.año = auxHotel->fechaSalida.año;
+			clienteactual->fechaSalida.mes = auxHotel->fechaSalida.mes;
+			clienteactual->fechaSalida.dia = auxHotel->fechaSalida.dia;
+			clienteactual->numHabitacion = auxNumHabitacion;
+		}
+		auxHotel = auxHotel->sig;
+	}
+
+}
+//agrega al historial del hotel nombre , fecha de ingreso, fecha de salida y habitación ocupadas
+Historial* agregarHistorial(Historial *historial, Habitacion clienteactual) {
+	Historial *nuevo = new(Historial);
+	Historial *auxHotel = historial;
+
+	if (auxHotel == NULL) {
+		nuevo->sig = NULL;
+		nuevo->ant = NULL;
+		nuevo->cliente.nombre = clienteactual.cliente.nombre;
+		nuevo->cliente.apellido = clienteactual.cliente.apellido;
+		nuevo->cliente.cedula = clienteactual.cliente.cedula;
+		nuevo->numHabitacionH = clienteactual.numHabitacion;
+		nuevo->fechaIngresoH.año = clienteactual.fechaIngreso.año;
+		nuevo->fechaIngresoH.mes = clienteactual.fechaIngreso.mes;
+		nuevo->fechaIngresoH.dia = clienteactual.fechaIngreso.dia;
+		nuevo->fechaSalidaH.año = clienteactual.fechaSalida.año;
+		nuevo->fechaSalidaH.mes = clienteactual.fechaSalida.mes;
+		nuevo->fechaSalidaH.dia = clienteactual.fechaSalida.dia;
+		historial = nuevo;
+
+	}
+	else {
+		Historial *aux = historial;
+		while (aux->sig != NULL) {
+			aux = aux->sig;
+		}
+		nuevo->cliente.nombre = clienteactual.cliente.nombre;
+		nuevo->cliente.apellido = clienteactual.cliente.apellido;
+		nuevo->cliente.cedula = clienteactual.cliente.cedula;
+		nuevo->numHabitacionH = clienteactual.numHabitacion;
+		nuevo->fechaIngresoH.año = clienteactual.fechaIngreso.año;
+		nuevo->fechaIngresoH.mes = clienteactual.fechaIngreso.mes;
+		nuevo->fechaIngresoH.dia = clienteactual.fechaIngreso.dia;
+		nuevo->fechaSalidaH.año = clienteactual.fechaSalida.año;
+		nuevo->fechaSalidaH.mes = clienteactual.fechaSalida.mes;
+		nuevo->fechaSalidaH.dia = clienteactual.fechaSalida.dia;
+		nuevo->sig = NULL;
+		nuevo->ant = aux;
+		aux->sig = nuevo;
+
+	}
+	return historial;
+}
+
+
 int  AyudaF1() {
 	int x;
 	int imp;
