@@ -1,11 +1,10 @@
-
 /************************************************
 *UNIVERSIDAD DE LAS FUERZAS ARMADAS "ESPE"      *
 *INTEGRANTES: GABRIELA ROSERO   EDWIN ASTUDILLO *
 *CARRERA: INGENIERIA EN SISTEMAS E INFORMÁTICA  *
 *INGENIERO: ING FERNANDO SOLIS                  *
 *Fecha de creación: 2017-11-11                  *
-*Fecha de modificación: 2017-11-20              *
+*Fecha de modificación: 2017-11-24              *
 *************************************************/
 
 //permite utilizar funciones como strcpy() para que no salga un warning (Problema de la actualización reciente de VS)
@@ -23,10 +22,13 @@
 #include <string>
 #include <stdbool.h>
 #include "Librerias.h"
+# include "qrcodegen.h"
 #include "Header.h"
 #include <windows.h>
 #include <time.h>
 # include <fstream>
+# include <sstream>
+
 using namespace std; 
 # define numCuartos 10
 
@@ -52,6 +54,16 @@ struct Habitacion {
 	struct Habitacion *ant;
 };
 
+struct Historial {
+	struct Persona cliente;
+	int numHabitacionH;
+	struct Fecha fechaIngresoH;
+	struct Fecha fechaSalidaH;
+	struct Historial *sig;
+	struct Historial *ant;
+
+};
+
 //Prototipos
 void gotoxy(int x, int y);
 void AjustarVentana(int Ancho, int Alto);
@@ -74,9 +86,19 @@ bool validarCorreo(char *corre, char **correos, int tam);
 char* generarCorreo(char* nombre, char* nombre2, char* apP, char *apM, char **correos, int tam, int sA);
 char * convertirStringAChar(string dato);
 string convertirCharAString(char *dato);
+bool soloNumeros(string datoIngresado);
 Habitacion* creandoHabitaciones(Habitacion *hotel, int numHabitacion);
 void imprimirHabitacionesDisponibles(Habitacion *hotel);
 bool cuartoDisponible(Habitacion *hotel, int num);
+void agregandoCliente(Habitacion *hotel, Habitacion *clienteactual);
+Historial* agregarHistorial(Historial *historial, Habitacion clienteactual);
+void mostrarHistorialCliente(Historial *historial);
+void eliminarCliente(Habitacion *hotel);
+static void generarQrBasico(char dato1[]);
+static void printQr(const uint8_t qrcode[]);
+void visualizarQR(Habitacion *hotel);
+
+void mostrar(Habitacion *hotel);
 
 int  AyudaF1();
 //***************************************PRINCIPAL*****************************************************
@@ -126,12 +148,12 @@ int main()
 	int y2 = 4;
 	int auxF = 0;
 	int opc;
-	long cedulita;
 	bool banderaF = false;
-	char c , ayu ;//Variable auxiliar que guardara los caracteres de los comandos
 	Habitacion *hotel = NULL;
-	bool banderaNumero = false;
+	Historial  *historial = NULL;
 	Habitacion clienteactual;
+	char c ;//Variable auxiliar que guardara los caracteres de los comandos
+	bool banderaNumero = false;
 	string auxDato;
 
 	system("COLOR F0");
@@ -143,19 +165,7 @@ int main()
 		hotel = creandoHabitaciones(hotel, cont);
 		cont++;
 	} while (cont != numCuartos);
-	//ingresando datos
-	do {
-		opc = 0;
-		limpiar();
-		/**************************************************************/
-		cout << "INGRESANDO DATOS" << endl;
-		imprimirHabitacionesDisponibles(hotel);
-		agregandoCliente(hotel, &clienteactual);
-		historial = agregarHistorial(historial, clienteactual);
-		/***********************************************************/
-		cout << "ingrese 1 para registrar otro cliente";
-		cin >> opc;
-	} while (opc == 1);
+	
 	do {
 		limpiar();
 		Cabecera2();
@@ -264,9 +274,9 @@ int main()
 						if (y == 4) {
 							limpiar();
 							cout << "***********************Imagen en consola*************************" << endl;
-							ShellExecute(NULL, TEXT("open"), TEXT("C:\\Users\\DANIELAROSERO\\Documents\\GitHub\\Proyecto1\\ProyectoGaby_Edwin\\ProyectoPrimerParcial\\Untitled1.exe"), NULL, NULL, SW_SHOWNORMAL);
-							//codigo inestable, solo en dev me esta funcionando.
-
+							ShellExecute(NULL, TEXT("open"), TEXT("C:\\Users\\DANIELAROSERO\\Documents\\ESPE\\3er Semestre\\ProgramacionI\\ProyectoGaby_Edwin - Copy\\IMAGEN C\\Untitled1.exe"), NULL, NULL, SW_SHOWNORMAL);
+							//codigo inestable, solo en dev me esta funcionando "mejor".
+							system("pause");
 						}
 							if (y == 19) {
 								cout << "***********************Habitaciones***************************" << endl;
@@ -276,8 +286,10 @@ int main()
 									/**************************************************************/
 									cout << "INGRESANDO DATOS" << endl;
 									imprimirHabitacionesDisponibles(hotel);
+									agregandoCliente(hotel, &clienteactual);
+									historial = agregarHistorial(historial, clienteactual);
 									/***********************************************************/
-									cout << "ingrese 1 para registrar otro cliente";
+									cout << "Ingrese 1 para registrar otro cliente: ";
 									cin >> opc;
 								} while (opc == 1);
 
@@ -286,29 +298,31 @@ int main()
 							if (y == 34) {
 								limpiar();
 								cout << "***********************Eliminar***************************" << endl;
-								/*Aquí va código para eliminación del ingreso.*/
-								
+								eliminarCliente(hotel);
+								imprimirHabitacionesDisponibles(hotel);
+								system("pause");
 							}
 
 
 						if (y == 49) {
 							limpiar();
 							cout << "***********************Buscar Cliente***************************" << endl;
-							/*Aquí va código para busqueda de cliente.*/
+							/*AQUI EDWIN AQUÍ SE PONE LA LLAMADA DE LA FUNCION PARA QUE FUNCIONE DENTRO DEL MENU. Aquí va código para busqueda de cliente.*/
 						}
 						if (y == 64) {
 							//Generar QR
 
 							limpiar();
 							cout << "*********************** Generar QR ***************************" << endl;
-							/*Aquí va código para generar QR.*/
+							visualizarQR(hotel);
+							system("pause");
 
 						}
 						if (y == 79) {
 
 							limpiar();
 							cout << "*********************** Generar PDF ***************************" << endl;
-							/*Aquí va código para generar PDF.*/
+							mostrarHistorialCliente(historial);
 						}
 						if (y == 94) {
 							//REGRESAR A MENU PRINCIPAL
@@ -389,14 +403,14 @@ void agregandoCliente(Habitacion *hotel, Habitacion *clienteactual) {
 			sololetras(*(&(auxNombre)));
 			auxHotel->cliente.nombre = convertirCharAString((*(&(auxNombre))));
 			//cin >> auxHotel->cliente.nombre;
-			cout << endl << "Ingrese el Apellido: ";
+			cout << endl << "Ingrese el apellido: ";
 			sololetras(*(&(auxApellido)));
 			auxHotel->cliente.apellido = convertirCharAString((*(&(auxApellido))));
 			//cin >> auxHotel->cliente.apellido;
 
 			// ingreso cédula y validando
 			do {
-				auxCedula = validarCed();
+				auxCedula = ValidarCed();
 			} while (auxCedula == 0);
 			auxHotel->cliente.cedula = auxCedula;
 			//cin >> auxHotel->cliente.cedula;
@@ -802,7 +816,7 @@ long ValidarCed()
 		cin.clear();
 		if (contador > 0) cin.ignore(1024, '\n');
 		{
-			cout << "Ingresa la cedula: " << endl;
+			cout << endl << "Ingresa la cedula: ";
 			cin >> digitoc;
 			contador++;
 			bandera2 = true;
@@ -920,7 +934,7 @@ void login(long *usuarios, char**claves, int tam) {
 	bool bandera = false;
 	char contrasenia[20];
 	long user; char *clv;
-	cout << "\t\tLOGIN - ROL DE PAGOS" << endl;
+	cout << "\t\tLOGIN - HOTEL " << endl;
 
 	do {
 
@@ -1093,7 +1107,7 @@ void imprimirHabitacionesDisponibles(Habitacion *hotel) {
 
 			cout << endl << "**************" << endl;
 			cout << "* HABITACION *" << endl;
-			cout << "* OCUPADA *" << endl;
+			cout << "*  OCUPADA  *" << endl;
 			cout << "*     " << aux->numHabitacion << "       *" << endl;
 			cout << "**************" << endl;
 
@@ -1109,4 +1123,199 @@ void imprimirHabitacionesDisponibles(Habitacion *hotel) {
 		aux = aux->sig;
 	}
 
+}
+//muestra todas las habitaciones 
+void mostrar(Habitacion *hotel) {
+	Habitacion *aux = hotel;
+
+	while (aux != NULL) {
+		cout << endl << "DATOS CLIENTE" << endl;
+		cout << "Nombre : " << aux->cliente.nombre << endl;
+		cout << "Apellido:" << aux->cliente.apellido << endl;
+		cout << "Cedula:" << aux->cliente.cedula << endl;
+		cout << "Fecha Ingreso:" << aux->fechaIngreso.año << "/" << aux->fechaIngreso.mes << "/" << aux->fechaIngreso.dia << endl;
+		cout << "Fecha Salida:" << aux->fechaSalida.año << "/" << aux->fechaSalida.mes << "/" << aux->fechaSalida.dia << endl;
+		if (aux->estadoHabitacion == false) {
+			cout << "Estado Habitación: libre" << endl;
+		}
+		else {
+			cout << "Estado Habitación: ocupado" << endl;
+		}
+		cout << "Habitación nr: " << aux->numHabitacion << endl;
+		aux = aux->sig;
+	}
+
+}
+//eliminar cliente  del hotel 
+void eliminarCliente(Habitacion *hotel) {
+	Habitacion *aux = hotel;
+	long auxCedula;
+	bool bandera = false;
+	cout << "Ingrese la cédula del cliente: ";
+	cin >> auxCedula;
+
+	while (aux != NULL) {
+
+		if (aux->cliente.cedula == auxCedula) {
+			bandera = true;
+			break;
+		}
+		aux = aux->sig;
+	}
+
+
+
+	if (bandera == true) {
+		aux->cliente.nombre = "";
+		aux->cliente.nombre = "";
+		aux->cliente.cedula = 0;
+		aux->estadoHabitacion = false;
+		aux->fechaIngreso.año = 0;
+		aux->fechaIngreso.mes = 0;
+		aux->fechaIngreso.dia = 0;
+		aux->fechaSalida.año = 0;
+		aux->fechaSalida.mes = 0;
+		aux->fechaSalida.dia = 0;
+		cout << "LA HABITACION YA ESTÁ DESOCUPADA: " << aux->numHabitacion;
+	}
+	else {
+		cout << "El Usuario  no se encuentra registrado en el Hotel";
+	}
+
+
+}
+//muestra un pdf con los datos del cliente y todas las fechas anteriores de los hospedajes
+void  mostrarHistorialCliente(Historial *historial) {
+
+	Historial *aux = historial;
+	int cont = 1;
+	long cedula;
+	bool bandera = false;
+	cout << "Ingrese la cedula: ";
+	cin >> cedula;
+	while (aux != NULL) {
+
+		if (aux->cliente.cedula == cedula) {
+			bandera = true;
+		}
+		aux = aux->sig;
+	}
+
+	if (bandera == true) {
+
+		aux = historial;
+		ofstream fs("Datos.txt");
+		while (aux != NULL) {
+			if (aux->cliente.cedula == cedula) {
+				if (cont == 1) {
+					fs << "::::::::::::: HISTORIAL DE HABITACIONES UTILIZADAS POR EL CLIENTE :::::::::::::" << endl << endl << endl << endl;
+					fs << endl << "Nombre: " << aux->cliente.nombre << endl << endl << endl << endl;
+					fs << "Apellido: " << aux->cliente.apellido << endl << endl << endl << endl;
+					fs << "Cedula: " << aux->cliente.cedula << endl << endl << endl << endl;
+					fs << "Numero de Habitacion: " << aux->numHabitacionH << endl << endl << endl << endl;
+					fs << "Fecha de Ingreso: " << aux->fechaIngresoH.año << "/" << aux->fechaIngresoH.mes << "/" << aux->fechaIngresoH.dia << endl << endl << endl << endl;
+					fs << "Fecha de salida: " << aux->fechaSalidaH.año << "/" << aux->fechaSalidaH.mes << "/" << aux->fechaSalidaH.dia << endl << endl << endl << endl;
+					cont++;
+				}
+				else {
+					fs << endl << "Numero de Habitacion: " << aux->numHabitacionH << endl << endl << endl << endl;
+					fs << "Fecha de Ingreso: " << aux->fechaIngresoH.año << "/" << aux->fechaIngresoH.mes << "/" << aux->fechaIngresoH.dia << endl << endl << endl << endl;
+					fs << "Fecha de salida: " << aux->fechaSalidaH.año << "/" << aux->fechaSalidaH.mes << "/" << aux->fechaSalidaH.dia << endl << endl << endl << endl;
+					cont++;
+				}
+			}
+			aux = aux->sig;
+		}
+		fs.close();
+
+		int imp;
+		system("cls");
+		imp = AyudaF1();
+		if (imp == 1) {
+			ofstream LeerDatos;
+			LeerDatos.open("Datos.txt", ios::out | ios::app);
+			tifstream in(TEXT("Datos.txt"));
+			PrintFile(in);
+			ShellExecute(NULL, TEXT("open"), TEXT("C:\\Users\\DANIELAROSERO\\Documents\\GitHub\\Proyecto1\\ProyectoGaby_Edwin\\ProyectoPrimerParcial\\Datos.pdf"), NULL, NULL, SW_SHOWNORMAL);
+		}
+	}
+	else {
+		cout << endl << "CLIENTE NO ENCONTRADO" << endl;
+	}
+
+
+	system("pause");
+	_getch();
+}
+
+static void generarQrBasico(char dato1[]) {
+	char *dato = dato1;  // User-supplied text
+	enum qrcodegen_Ecc errCorLvl = qrcodegen_Ecc_LOW;  // Error correction level
+
+													   // Make and print the QR Code symbol
+	uint8_t qrcode[qrcodegen_BUFFER_LEN_MAX];
+	uint8_t tempBuffer[qrcodegen_BUFFER_LEN_MAX];
+	bool ok = qrcodegen_encodeText(dato, tempBuffer, qrcode, errCorLvl,
+		qrcodegen_VERSION_MIN, qrcodegen_VERSION_MAX, qrcodegen_Mask_AUTO, true);
+	if (ok)
+		printQr(qrcode);
+}
+//visualizar QR
+void visualizarQR(Habitacion *hotel) {
+	Habitacion *aux = hotel;
+	long auxCedula;
+	bool bandera = false;
+
+	do {
+		auxCedula = ValidarCed();
+	} while (auxCedula == 0);
+
+
+	while (aux != NULL) {
+		if (aux->cliente.cedula == auxCedula) {
+			bandera = true;
+			break;
+		}
+		aux = aux->sig;
+	}
+
+	if (bandera == true) {
+		ostringstream ss;
+		ss << aux->cliente.cedula;
+		string nCedula = ss.str();
+		gotoxy(10, 40);
+		generarQrBasico(convertirStringAChar("\nNombre:" + aux->cliente.nombre + " " + aux->cliente.apellido + " \nCedula:" + nCedula));
+	}
+	else {
+		cout << "El Usuario  no se encuentra registrado en el Hotel";
+	}
+
+}
+static void printQr(const uint8_t qrcode[]) {
+	int size = qrcodegen_getSize(qrcode);
+	int border = 4;
+	for (int y = -border; y < size + border; y++) {
+		for (int x = -border; x < size + border; x++) {
+			fputs((qrcodegen_getModule(qrcode, x, y) ? "\333\333" : "  "), stdout);
+		}
+		fputs("\n", stdout);
+	}
+}
+
+bool soloNumeros(string datoIngresado) {
+
+	int cont = 0;
+	bool bandera = false;
+	for (int i = 0; i < datoIngresado.length(); i++) {
+
+		if (datoIngresado[i] >= 48 && datoIngresado[i] <= 57) {
+			cont++;
+		}
+	}
+
+	if (cont == datoIngresado.length()) {
+		bandera = true;
+	}
+
+	return bandera;
 }

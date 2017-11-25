@@ -4,7 +4,7 @@
 *CARRERA: INGENIERIA EN SISTEMAS E INFORMÁTICA  *
 *INGENIERO: ING FERNANDO SOLIS                  *
 *Fecha de creación: 2017-11-11                  *
-*Fecha de modificación: 2017-11-13              *
+*Fecha de modificación: 2017-11-24              *
 *************************************************/
 
 # ifndef LIBRERIAS_H

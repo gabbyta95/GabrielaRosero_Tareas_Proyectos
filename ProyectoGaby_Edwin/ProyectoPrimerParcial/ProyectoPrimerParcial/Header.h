@@ -1,3 +1,11 @@
+/************************************************
+*UNIVERSIDAD DE LAS FUERZAS ARMADAS "ESPE"      *
+*INTEGRANTES: GABRIELA ROSERO   EDWIN ASTUDILLO *
+*CARRERA: INGENIERIA EN SISTEMAS E INFORMÁTICA  *
+*INGENIERO: ING FERNANDO SOLIS                  *
+*Fecha de creación: 2017-11-11                  *
+*Fecha de modificación: 2017-11-24              *
+*************************************************/
 # ifndef HEADER_H
 # define HEADER_H
 #include"Librerias.h"
@@ -7,11 +15,11 @@ void Outtextxy(HDC hdc, int x, int y, tstring Msg) {
 	TextOut(hdc, x, y, Msg.c_str(), static_cast<int>(Msg.length()));
 }
 void ShowError(tstring strMsg) {
-	MessageBox(NULL, strMsg.c_str(), TEXT("Imprimir"), MB_ICONERROR);
+	MessageBox(NULL, strMsg.c_str(), TEXT("Generar PDF"), MB_ICONERROR);
 	exit(1);
 }
 void ShowInformation(tstring strText) {
-	MessageBox(NULL, strText.c_str(), TEXT("Imprimir"), MB_ICONINFORMATION);
+	MessageBox(NULL, strText.c_str(), TEXT("Generar PDF"), MB_ICONINFORMATION);
 }
 void PrintFile(tifstream& f) {
 	PRINTDLG pd;
@@ -39,7 +47,7 @@ void PrintFile(tifstream& f) {
 	if (PrintDlg(&pd)) {
 		if (pd.hDC) {
 			if (StartDoc(pd.hDC, &di) != SP_ERROR) {
-				cout << "Generando...\nEspere un momento" << endl;
+				cout << "El proceso comenzo...\nEspere un momento" << endl;
 				StartPage(pd.hDC);
 				while (!f.eof()) {
 					std::getline(f, strLine);
@@ -58,9 +66,9 @@ void PrintFile(tifstream& f) {
 
 	}
 	else
-		ShowInformation(TEXT("Impresion cancelada"));
+		ShowInformation(TEXT("Generacion de PDF cancelada"));
 
-	ShowInformation(TEXT("La impresion se realizo correctamente."));
+	ShowInformation(TEXT("La generacion de PDF se realizo correctamente."));
 }
 
 # endif
