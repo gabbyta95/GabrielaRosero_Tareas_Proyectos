@@ -305,9 +305,10 @@ int main()
 
 
 						if (y == 49) {
-							limpiar();
+							limpiar(); //Buscar Cliente
 							cout << "***********************Buscar Cliente***************************" << endl;
-							/*AQUI EDWIN AQUÍ SE PONE LA LLAMADA DE LA FUNCION PARA QUE FUNCIONE DENTRO DEL MENU. Aquí va código para busqueda de cliente.*/
+							cout << "BUSCANDO  DATOS  CLIENTE" << endl;
+							buscarCliente(hotel);
 						}
 						if (y == 64) {
 							//Generar QR
@@ -584,6 +585,34 @@ Historial* agregarHistorial(Historial *historial, Habitacion clienteactual) {
 
 	}
 	return historial;
+}
+
+void buscarCliente(Habitacion *hotel) {
+	Habitacion *aux = hotel;
+	long auxCedula;
+	bool bandera = false;
+
+	do {
+		auxCedula = validarCed();
+	} while (auxCedula == 0);
+
+	while (aux != NULL) {
+
+		if (aux->cliente.cedula == auxCedula) {
+			bandera = true;
+			break;
+		}
+		aux = aux->sig;
+	}
+
+	if (bandera == true) {
+		cout << "Cliente encontrado en la Habitacion :" << aux->numHabitacion;
+	}
+	else {
+		cout << "El Usuario  no se encuentra registrado en el Hotel";
+	}
+
+
 }
 
 
