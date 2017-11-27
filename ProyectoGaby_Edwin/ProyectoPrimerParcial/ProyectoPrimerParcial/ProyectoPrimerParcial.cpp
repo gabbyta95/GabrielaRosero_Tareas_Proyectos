@@ -94,6 +94,7 @@ void agregandoCliente(Habitacion *hotel, Habitacion *clienteactual);
 Historial* agregarHistorial(Historial *historial, Habitacion clienteactual);
 void mostrarHistorialCliente(Historial *historial);
 void eliminarCliente(Habitacion *hotel);
+void buscarCliente(Habitacion *hotel);
 static void generarQrBasico(char dato1[]);
 static void printQr(const uint8_t qrcode[]);
 void visualizarQR(Habitacion *hotel);
@@ -157,8 +158,8 @@ int main()
 	string auxDato;
 
 	system("COLOR F0");
-	Cargando();
-	login(cedula, clave, cont);
+	//Cargando();
+//	login(cedula, clave, cont);
 	AjustarVentana(200, 58);
 	//creando las habitaciones 
 	do {
@@ -195,7 +196,7 @@ int main()
 		if (c == 0)
 		{
 		
-			//AYUDA ShellExecute(NULL, TEXT("open"), TEXT("C:\\Users\\DANIELAROSERO\\Desktop\\ProyectoGaby_Edwin\\ProyectoPrimerParcial\\ayuda.chm"), NULL, NULL, SW_SHOWNORMAL);
+			ShellExecute(NULL, TEXT("open"), TEXT("C:\\Users\\DANIELAROSERO\\Documents\\GitHub\\Proyecto1\\ProyectoGaby_Edwin\\ProyectoPrimerParcial\\ayuda.chm"), NULL, NULL, SW_SHOWNORMAL);
 		
 		} 
 
@@ -309,6 +310,7 @@ int main()
 							cout << "***********************Buscar Cliente***************************" << endl;
 							cout << "BUSCANDO  DATOS  CLIENTE" << endl;
 							buscarCliente(hotel);
+							system("pause");
 						}
 						if (y == 64) {
 							//Generar QR
@@ -587,33 +589,6 @@ Historial* agregarHistorial(Historial *historial, Habitacion clienteactual) {
 	return historial;
 }
 
-void buscarCliente(Habitacion *hotel) {
-	Habitacion *aux = hotel;
-	long auxCedula;
-	bool bandera = false;
-
-	do {
-		auxCedula = validarCed();
-	} while (auxCedula == 0);
-
-	while (aux != NULL) {
-
-		if (aux->cliente.cedula == auxCedula) {
-			bandera = true;
-			break;
-		}
-		aux = aux->sig;
-	}
-
-	if (bandera == true) {
-		cout << "Cliente encontrado en la Habitacion :" << aux->numHabitacion;
-	}
-	else {
-		cout << "El Usuario  no se encuentra registrado en el Hotel";
-	}
-
-
-}
 
 
 int  AyudaF1() {
@@ -1275,6 +1250,33 @@ void  mostrarHistorialCliente(Historial *historial) {
 
 	system("pause");
 	_getch();
+}
+
+void buscarCliente(Habitacion *hotel) {
+	Habitacion *aux = hotel;
+	long auxCedula;
+	bool bandera = false;
+
+	do {
+		auxCedula = ValidarCed();
+	} while (auxCedula == 0);
+
+	while (aux != NULL) {
+
+		if (aux->cliente.cedula == auxCedula) {
+			bandera = true;
+			break;
+		}
+		aux = aux->sig;
+	}
+
+	if (bandera == true) {
+		cout << "Cliente encontrado en la Habitacion :" << aux->numHabitacion;
+	}
+	else {
+		cout << "El Usuario  no se encuentra registrado en el Hotel";
+	}
+
 }
 
 static void generarQrBasico(char dato1[]) {
