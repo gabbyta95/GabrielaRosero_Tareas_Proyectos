@@ -1,0 +1,2 @@
+﻿  listasm.cpp
+c:\users\danielarosero\documents\visual studio 2017\projects\listas\listas\listasm.cpp(418): error C2857: '#include' statement specified with the /Ycstdafx.h command-line option was not found in the source file
