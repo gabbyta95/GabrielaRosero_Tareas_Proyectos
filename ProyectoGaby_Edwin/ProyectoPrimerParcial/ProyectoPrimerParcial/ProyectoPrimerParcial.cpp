@@ -4,10 +4,10 @@
 *CARRERA: INGENIERIA EN SISTEMAS E INFORMÁTICA  *
 *INGENIERO: ING FERNANDO SOLIS                  *
 *Fecha de creación: 2017-11-11                  *
-*Fecha de modificación: 2017-11-24              *
+*Fecha de modificación: 2017-11-27              *
 *************************************************/
 
-//permite utilizar funciones como strcpy() para que no salga un warning (Problema de la actualización reciente de VS)
+//strcpy() para que no salga un warning 
 #define _CRT_SECURE_NO_WARNINGS
 /* #ifdef _MSC_VER
 #define _CRT_SECURE_NO_WARNINGS
@@ -158,8 +158,8 @@ int main()
 	string auxDato;
 
 	system("COLOR F0");
-	//Cargando();
-//	login(cedula, clave, cont);
+	Cargando();
+	login(cedula, clave, cont);
 	AjustarVentana(200, 58);
 	//creando las habitaciones 
 	do {
@@ -168,8 +168,10 @@ int main()
 	} while (cont != numCuartos);
 	
 	do {
+		
 		limpiar();
 		Cabecera2();
+		AjustarVentana(400, 58);
 		gotoxy(y2, 5);
 		colorPrinc2(y2);
 		c = _getch();
@@ -657,6 +659,7 @@ void Cabecera() {
 	printf("Regresar");
 }
 void Cabecera2() {
+	AjustarVentana(200, 58);
 	gotoxy(32, 1);
 	printf("UNIVERSIDAD DE LAS FUERZAS ARMADAS - ESPE");
 	gotoxy(5, 5);
@@ -1156,7 +1159,7 @@ void eliminarCliente(Habitacion *hotel) {
 	long auxCedula;
 	bool bandera = false;
 	cout << "Ingrese la cédula del cliente: ";
-	cin >> auxCedula;
+	cin >> soloNumeros(auxCedula);
 
 	while (aux != NULL) {
 
@@ -1311,11 +1314,14 @@ void visualizarQR(Habitacion *hotel) {
 	}
 
 	if (bandera == true) {
-		ostringstream ss;
+		ostringstream ss;		
 		ss << aux->cliente.cedula;
 		string nCedula = ss.str();
+		ostringstream st;
+		st << aux->numHabitacion;
+		string nHabitacion = st.str();
 		gotoxy(10, 40);
-		generarQrBasico(convertirStringAChar("\nNombre:" + aux->cliente.nombre + " " + aux->cliente.apellido + " \nCedula:" + nCedula));
+		generarQrBasico(convertirStringAChar("\nNombre:" + aux->cliente.nombre + " " + aux->cliente.apellido + " \nCedula:" + nCedula + " \nHabitacion:" + nHabitacion));
 	}
 	else {
 		cout << "El Usuario  no se encuentra registrado en el Hotel";

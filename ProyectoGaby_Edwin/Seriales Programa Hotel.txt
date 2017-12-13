@@ -1,0 +1,5 @@
+  serial0='GABYS'; //esta es la clave para que funcione 
+  serial1='STEFY';
+  serial2='ROSER';
+  serial3='CASAS';
+  serial4='ESTRU';

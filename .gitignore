@@ -1,0 +1,7 @@
+*.ipch
+*.db
+*.suo
+*.iss
+*.tlog
+*.ilk
+*.pdb
