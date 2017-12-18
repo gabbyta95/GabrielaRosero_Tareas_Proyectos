@@ -1,0 +1,20 @@
+﻿'Aplicativo.exe' (Win32): 'C:\Users\User\Desktop\Colas\Aplicativo\Debug\Aplicativo.exe' cargado. Símbolos cargados.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\ntdll.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\kernel32.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\kernel32.dll' descargado
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\kernel32.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\KernelBase.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Program Files\AVAST Software\Avast\aswhookx.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\msvcp140d.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\vcruntime140d.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\ucrtbased.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\advapi32.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\msvcrt.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\sechost.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\rpcrt4.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\sspicli.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\cryptbase.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\bcryptprimitives.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+'Aplicativo.exe' (Win32): 'C:\Windows\SysWOW64\kernel.appcore.dll' cargado. No se encuentra el archivo PDB o no se puede abrir.
+El subproceso 0x1a50 terminó con código 0 (0x0).
+El programa '[5484] Aplicativo.exe' terminó con código 0 (0x0).
