@@ -4,7 +4,7 @@
 *CARRERA: INGENIERIA EN SISTEMAS E INFORMÁTICA  *
 *INGENIERO: ING FERNANDO SOLIS                  *
 *Fecha de creación: 2017-12-19                  *
-*Fecha de modificación: 2017-12-27              *
+*Fecha de modificación: 2018-01-13              *
 *************************************************/
 
 //strcpy() para que no salga un warning 
@@ -424,7 +424,7 @@ void Cargando() {
 	cout << "******************************************************************************"; gotoxy(5, 4);
 	cout << "**                UNIVERSIDAD DE LAS FUERZAS ARMADAS - ESPE                 **"; gotoxy(5, 5);
 	cout << "**                             PROGRAMACION I                               **"; gotoxy(5, 6);
-	cout << "**               PROYECTO DE PRIMER PARCIAL: Calculadora                    **"; gotoxy(5, 7);
+	cout << "**               PROYECTO DEL SEGUNDO PARCIAL: Calculadora                  **"; gotoxy(5, 7);
 	cout << "**  INTEGRANTES: ASTUDILLO EDWIN - ROSERO GABRIELA                          **"; gotoxy(5, 8);
 	cout << "**  DOCENTE: ING. FERNANDO SOLIS                                            **"; gotoxy(5, 9);
 	cout << "******************************************************************************";
