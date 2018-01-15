@@ -14,6 +14,7 @@ public:
 	string retornarElementoDelInicio();
 	void insertar(string dato);
 	void imprimir();
+	string expresionConcatenada();
 };
 
 # endif

@@ -53,10 +53,26 @@ void Listita::insertar(string dato) {
 void Listita::imprimir() {
 
 	Nodo *aux = cabeza;
-	cout << "La lista es:" << endl;
+	cout << endl << endl << "La expresión Infija es: ";
 	while (aux != NULL) {
-		cout << aux->getDato() << endl;
+
+		if (aux->getDato() == "sin" || aux->getDato() == "cos" || aux->getDato() == "tan" || aux->getDato() == "sen") {
+			cout << aux->getDato() << "(";
+		}
+		else {
+			cout << aux->getDato();
+		}
 		aux = aux->getPtr_Siguiente();
 	}
 
+}
+
+string Listita::expresionConcatenada() {
+	Nodo *aux = cabeza;
+	string cadena = "";
+	while (aux != NULL) {
+		cadena = cadena + aux->getDato() + "   ";
+		aux = aux->getPtr_Siguiente();
+	}
+	return cadena;
 }
