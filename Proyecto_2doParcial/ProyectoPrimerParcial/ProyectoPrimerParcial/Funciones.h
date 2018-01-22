@@ -27,7 +27,12 @@ float calcularTan(float angulo);
 bool validarOperadoresExpresion(string expresionInfija);
 bool parentesis(string expresionInfija);
 bool esOperadorAritmetico(char caracter);
-
+void  mostrarHistorial();
+static void printQr(const uint8_t qrcode[]);
+void visualizarQR();
+static void generarQrBasico(char dato1[]);
+char * convertirStringAChar(string dato);
+int  AyudaF1();
 
 /****************************
 string convertirInfijaAPosfija(string expresionInfija);

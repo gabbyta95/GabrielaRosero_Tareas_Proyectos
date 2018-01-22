@@ -86,6 +86,7 @@ void menuOpciones() {
 			break;
 		case 3:
 			//PDF
+			mostrarHistorial();
 			gotoxy(25, 25);
 			system("pause");
 			bandera = true;
