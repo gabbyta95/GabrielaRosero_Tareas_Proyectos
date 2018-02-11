@@ -1,0 +1,12 @@
+﻿  stdafx.cpp
+  qrcodegen.cpp
+c:\users\danielarosero\documents\github\gabrielarosero_tareas_proyectos\proyecto_3erparcial\proyectoprimerparcial\proyectoprimerparcial\qrcodegen.cpp(186): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
+  SegundoParcial.cpp
+  Nodo.cpp
+  MenuOpciones.cpp
+  MenuMouse.cpp
+  Funciones.cpp
+c:\users\danielarosero\documents\github\gabrielarosero_tareas_proyectos\proyecto_3erparcial\proyectoprimerparcial\proyectoprimerparcial\funciones.cpp(71): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(125): note: see declaration of 'strcpy'
+  Generating Code...
+  ProyectoPrimerParcial.vcxproj -> C:\Users\DANIELAROSERO\Documents\GitHub\GabrielaRosero_Tareas_Proyectos\Proyecto_3erParcial\ProyectoPrimerParcial\x64\Debug\SegundoParcial.exe
