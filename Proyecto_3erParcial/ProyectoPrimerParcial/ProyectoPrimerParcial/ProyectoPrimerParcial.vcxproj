@@ -146,12 +146,12 @@
     <ClCompile Include="Funciones.cpp" />
     <ClCompile Include="MenuMouse.cpp" />
     <ClCompile Include="MenuOpciones.cpp" />
-    <ClCompile Include="Nodo.cpp" />
     <ClCompile Include="SegundoParcial.cpp" />
     <ClCompile Include="qrcodegen.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArbolBinario.h" />
     <ClInclude Include="Funciones.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="Librerias.h" />

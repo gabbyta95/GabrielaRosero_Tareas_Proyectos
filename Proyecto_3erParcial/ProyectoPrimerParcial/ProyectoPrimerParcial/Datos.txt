@@ -1,0 +1,29 @@
+::::::::::::: HISTORIAL DE HABITACIONES UTILIZADAS POR EL CLIENTE :::::::::::::
+
+
+
+
+Nombre: Chino
+
+
+
+Apellido: Astudillo
+
+
+
+Cedula: 1718388208
+
+
+
+Numero de Habitacion: 6
+
+
+
+Fecha de Ingreso: 2017/12/5
+
+
+
+Fecha de salida: 2017/12/30
+
+
+

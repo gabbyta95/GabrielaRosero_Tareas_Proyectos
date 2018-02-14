@@ -2,11 +2,25 @@
   qrcodegen.cpp
 c:\users\danielarosero\documents\github\gabrielarosero_tareas_proyectos\proyecto_3erparcial\proyectoprimerparcial\proyectoprimerparcial\qrcodegen.cpp(186): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
   SegundoParcial.cpp
-  Nodo.cpp
   MenuOpciones.cpp
+c:\users\danielarosero\documents\github\gabrielarosero_tareas_proyectos\proyecto_3erparcial\proyectoprimerparcial\proyectoprimerparcial\menuopciones.cpp(155): warning C4101: 'aux': unreferenced local variable
   MenuMouse.cpp
   Funciones.cpp
 c:\users\danielarosero\documents\github\gabrielarosero_tareas_proyectos\proyecto_3erparcial\proyectoprimerparcial\proyectoprimerparcial\funciones.cpp(71): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(125): note: see declaration of 'strcpy'
   Generating Code...
-  ProyectoPrimerParcial.vcxproj -> C:\Users\DANIELAROSERO\Documents\GitHub\GabrielaRosero_Tareas_Proyectos\Proyecto_3erParcial\ProyectoPrimerParcial\x64\Debug\SegundoParcial.exe
+MenuOpciones.obj : error LNK2005: "public: void __cdecl Nodo::nuevoValor(int)" (?nuevoValor@Nodo@@QEAAXH@Z) already defined in Funciones.obj
+MenuOpciones.obj : error LNK2005: "public: void __cdecl Nodo::ramaDcho(class Nodo *)" (?ramaDcho@Nodo@@QEAAXPEAV1@@Z) already defined in Funciones.obj
+MenuOpciones.obj : error LNK2005: "public: void __cdecl Nodo::ramaIzdo(class Nodo *)" (?ramaIzdo@Nodo@@QEAAXPEAV1@@Z) already defined in Funciones.obj
+MenuOpciones.obj : error LNK2005: "public: class Nodo * __cdecl Nodo::subArbolDcho(void)" (?subArbolDcho@Nodo@@QEAAPEAV1@XZ) already defined in Funciones.obj
+MenuOpciones.obj : error LNK2005: "public: class Nodo * __cdecl Nodo::subArbolIzdo(void)" (?subArbolIzdo@Nodo@@QEAAPEAV1@XZ) already defined in Funciones.obj
+MenuOpciones.obj : error LNK2005: "public: int __cdecl Nodo::valorNodo(void)" (?valorNodo@Nodo@@QEAAHXZ) already defined in Funciones.obj
+MenuOpciones.obj : error LNK2005: "public: void __cdecl Nodo::visitar(void)" (?visitar@Nodo@@QEAAXXZ) already defined in Funciones.obj
+SegundoParcial.obj : error LNK2005: "public: void __cdecl Nodo::nuevoValor(int)" (?nuevoValor@Nodo@@QEAAXH@Z) already defined in Funciones.obj
+SegundoParcial.obj : error LNK2005: "public: void __cdecl Nodo::ramaDcho(class Nodo *)" (?ramaDcho@Nodo@@QEAAXPEAV1@@Z) already defined in Funciones.obj
+SegundoParcial.obj : error LNK2005: "public: void __cdecl Nodo::ramaIzdo(class Nodo *)" (?ramaIzdo@Nodo@@QEAAXPEAV1@@Z) already defined in Funciones.obj
+SegundoParcial.obj : error LNK2005: "public: class Nodo * __cdecl Nodo::subArbolDcho(void)" (?subArbolDcho@Nodo@@QEAAPEAV1@XZ) already defined in Funciones.obj
+SegundoParcial.obj : error LNK2005: "public: class Nodo * __cdecl Nodo::subArbolIzdo(void)" (?subArbolIzdo@Nodo@@QEAAPEAV1@XZ) already defined in Funciones.obj
+SegundoParcial.obj : error LNK2005: "public: int __cdecl Nodo::valorNodo(void)" (?valorNodo@Nodo@@QEAAHXZ) already defined in Funciones.obj
+SegundoParcial.obj : error LNK2005: "public: void __cdecl Nodo::visitar(void)" (?visitar@Nodo@@QEAAXXZ) already defined in Funciones.obj
+C:\Users\DANIELAROSERO\Documents\GitHub\GabrielaRosero_Tareas_Proyectos\Proyecto_3erParcial\ProyectoPrimerParcial\x64\Debug\SegundoParcial.exe : fatal error LNK1169: one or more multiply defined symbols found

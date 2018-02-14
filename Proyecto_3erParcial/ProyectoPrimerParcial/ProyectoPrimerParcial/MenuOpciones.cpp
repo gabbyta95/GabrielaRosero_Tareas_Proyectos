@@ -10,6 +10,7 @@
 # include <windows.h>
 # include "MenuMouse.h"
 # include "MenuOpciones.h"
+# include "ArbolBinario.h"
 # include <iostream>
 # include "Funciones.h"
 #include <string>
@@ -18,12 +19,12 @@
 #include <stdlib.h>
 
 using namespace std;
-void Salida();
+bool verificar_entero(string cadena);
 //Implementacion función gotoxy no devuelve ningun valor.(Es de la libreria conio.h)
 //recibe las coordenas X (posición X del cursor(horizontal)) y Y ((posición Y del cursor (vertical))).
 //la pantalla de c++ tiene 24 renglones y 80 columnas por lo que no debemos sobre pasarnos de esos valores
 //la esquina superior izquierda es la posicion(1,1)
-
+int opcion;
 
 void gotoxy(int x, int y) {
 	/*propio de la consola*/
@@ -44,7 +45,7 @@ void gotoxy(int x, int y) {
 
 void menuOpciones() {
 
-	int opcion;
+	
 	bool bandera = false;
 	do {
 
@@ -79,24 +80,28 @@ void menuOpciones() {
 
 		case 1:
 			//BINARIO
+			menuBinario();
 			gotoxy(25, 25);
 			system("pause");
 			bandera = true;
 			break;
 		case 2:
 			//B
+			menuB();
 			gotoxy(25, 25);
 			system("pause");
 			bandera = true;
 			break;
 		case 3:
 			//B+
+			menuBPlus();
 			gotoxy(25, 25);
 			system("pause");
 			bandera = true;
 			break;
 		case 4:
 			//AVL
+			menuAvl();
 			gotoxy(25, 25);
 			system("pause");
 			bandera = true;
@@ -141,6 +146,244 @@ void menuOpciones() {
 	} while (bandera != false);
 }
 
+//BINARIO
+void menuBinario() {
+	int opcion;
+	string dato;
+	string dato_aux;
+
+	Nodo* aux;
+	ArbolBinario arbol_entero, arbol_copia;
+	bool bandera = false;
+	do {
+
+		system("cls");
+
+		gotoxy(37, 3);//coodenadas XyY
+		cout << "\tMENU  SECUNDARIO BINARIO \n";
+		gotoxy(15, 7);//coodenadas XyY
+		cout << "  Insertar \n";
+		gotoxy(15, 8);
+		cout << "  Mostrar arbol \n";
+		gotoxy(15, 9);
+		cout << "  Graficacion \n";
+		gotoxy(15, 10);
+		cout << "  Atrás \n";
+
+
+		opcion = menuMouse2();
+		system("cls");
+		switch (opcion) {
+
+
+		case 1:
+			//Insertar
+			cout << "\nIngrese el dato entero: ";
+			cin >> dato;
+			if (verificar_entero(dato)) arbol_entero.Insertar(stoi(dato));
+			else {
+				cout << "No es un dato entero valido para ingreso";
+				system("pause>null");
+			}
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		case 2:
+			//Mostrar
+			cout << "Visualizacion del Arbol Binario Entero\n";
+			arbol_entero.dibujarArbol(arbol_entero.Oraiz(), 1);
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		case 3:
+			//Graficacion
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		case 4:
+			//Atrás
+			menuOpciones();
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;		
+		}
+
+	} while (bandera != false);
+}
+
+//B
+
+void menuB() {
+
+	int opcion;
+	bool bandera = false;
+	do {
+
+		system("cls");
+
+		gotoxy(37, 3);//coodenadas XyY
+		cout << "\tMENU  SECUNDARIO B\n";
+		gotoxy(15, 7);//coodenadas XyY
+		cout << "  Insertar \n";
+		gotoxy(15, 8);
+		cout << "  Mostrar arbol \n";
+		gotoxy(15, 9);
+		cout << "  Graficacion \n";
+		gotoxy(15, 10);
+		cout << "  Atrás \n";
+
+
+		opcion = menuMouse2();
+		system("cls");
+		switch (opcion) {
+
+
+		case 1:
+			//Insertar
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		case 2:
+			//Mostrar
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		case 3:
+			//Graficacion
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		case 4:
+			//Atrás
+			menuOpciones();
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		}
+
+	} while (bandera != false);
+}
+
+//B+
+void menuBPlus() {
+
+	int opcion;
+	bool bandera = false;
+	do {
+
+		system("cls");
+
+		gotoxy(37, 3);//coodenadas XyY
+		cout << "\tMENU  SECUNDARIO B+ \n";
+		gotoxy(15, 7);//coodenadas XyY
+		cout << "  Insertar \n";
+		gotoxy(15, 8);
+		cout << "  Mostrar arbol \n";
+		gotoxy(15, 9);
+		cout << "  Graficacion \n";
+		gotoxy(15, 10);
+		cout << "  Atrás \n";
+
+
+		opcion = menuMouse2();
+		system("cls");
+		switch (opcion) {
+
+
+		case 1:
+			//Insertar
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		case 2:
+			//Mostrar
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		case 3:
+			//Graficacion
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		case 4:
+			//Atrás
+			menuOpciones();
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		}
+
+	} while (bandera != false);
+}
+
+//AVL
+void menuAvl() {
+
+	int opcion;
+	bool bandera = false;
+	do {
+
+		system("cls");
+
+		gotoxy(37, 3);//coodenadas XyY
+		cout << "\tMENU  SECUNDARIO AVL\n";
+		gotoxy(15, 7);//coodenadas XyY
+		cout << "  Insertar \n";
+		gotoxy(15, 8);
+		cout << "  Mostrar arbol \n";
+		gotoxy(15, 9);
+		cout << "  Graficacion \n";
+		gotoxy(15, 10);
+		cout << "  Atrás \n";
+
+
+		opcion = menuMouse2();
+		system("cls");
+		switch (opcion) {
+
+
+		case 1:
+			//Insertar
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		case 2:
+			//Mostrar
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		case 3:
+			//Graficacion
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		case 4:
+			//Atrás
+			menuOpciones();
+			gotoxy(25, 25);
+			system("pause");
+			bandera = true;
+			break;
+		}
+
+	} while (bandera != false);
+}
+
 void Salida() {
 	int cont = 0, i = 0, j = 3;
 	gotoxy(23, 3);
@@ -158,4 +401,27 @@ void Salida() {
 	} while (i <= 100);
 	cout << endl << "\n\t\tGRACIAS POR USAR EL PROGRAMA" << endl;
 	system("COLOR F0"); //Hace blanco el fondo
+}
+
+bool verificar_entero(string cadena) {
+	int j = 0, i = 0;
+	bool bandera = true;
+	for (int h = 0; h < 20; h++) {
+		if (cadena[i] == '\0') {
+			if (i == 0) {
+				bandera = false;
+			}
+			break;
+		}
+		if (cadena[h] == '.') { // permite verificar que no se ingrese puntos, solo numeros
+			bandera = false;
+			break;
+		}
+		if (cadena[i] != '0'&&cadena[i] != '1'&&cadena[i] != '2'&&cadena[i] != '3'&&cadena[i] != '4'&&cadena[i] != '5'&&cadena[i] != '6'&&cadena[i] != '7'&&cadena[i] != '8'&&cadena[i] != '9') {
+			bandera = false;
+			break;
+		}
+		i++;
+	}
+	return bandera;
 }
