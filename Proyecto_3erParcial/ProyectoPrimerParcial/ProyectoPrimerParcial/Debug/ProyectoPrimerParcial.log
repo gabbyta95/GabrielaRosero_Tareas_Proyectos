@@ -1,6 +1,0 @@
-﻿  ProyectoPrimerParcial.cpp
-c:\users\danielarosero\desktop\proyectogaby_edwin\proyectoprimerparcial\proyectoprimerparcial\proyectoprimerparcial.cpp(95): warning C4101: 'ayu': unreferenced local variable
-c:\users\danielarosero\desktop\proyectogaby_edwin\proyectoprimerparcial\proyectoprimerparcial\proyectoprimerparcial.cpp(93): warning C4101: 'cedulita': unreferenced local variable
-c:\users\danielarosero\desktop\proyectogaby_edwin\proyectoprimerparcial\proyectoprimerparcial\proyectoprimerparcial.cpp(741): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(129): note: see declaration of 'strcpy'
-  ProyectoPrimerParcial.vcxproj -> C:\Users\DANIELAROSERO\Desktop\ProyectoGaby_Edwin\ProyectoPrimerParcial\Debug\ProyectoPrimerParcial.exe

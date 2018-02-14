@@ -1,0 +1,11 @@
+﻿  Funciones.cpp
+c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(83): warning C4018: '<': no coinciden signed/unsigned
+c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(99): warning C4018: '<': no coinciden signed/unsigned
+c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(107): warning C4018: '<': no coinciden signed/unsigned
+c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(76): warning C4101: 'auxExpresion_Infija': variable local sin referencia
+c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(292): warning C4244: 'return': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(330): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(333): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(336): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(338): warning C4715: 'operacionFunciones': no todas las rutas de acceso de control devuelven un valor
+  ProyectoSegundoParcial.vcxproj -> C:\Users\henry\Desktop\ProyectoSegundoParcial\ProyectoSegundoParcial\ProyectoSegundoParcial\Debug\ProyectoSegundoParcial.exe

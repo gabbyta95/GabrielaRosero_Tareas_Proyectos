@@ -1,0 +1,14 @@
+*****************************EXPRESION INGRESADA**********************************
+
+ La expresión infija es : 
+
+1:+:3:*:tan(:2:*:cos(:1:+:5:):-:1:):
+
+
+La expresión postfija es :
+
+
+13215+cos*1-tan*+
+
+ Respuesta : 1.05179
+
