@@ -12,7 +12,6 @@ char * convertirStringAChar(string dato);
 void limpiar();
 int  AyudaF1();
 void gotoxy(int x, int y);
-void generarPDF();
 
 
 # endif

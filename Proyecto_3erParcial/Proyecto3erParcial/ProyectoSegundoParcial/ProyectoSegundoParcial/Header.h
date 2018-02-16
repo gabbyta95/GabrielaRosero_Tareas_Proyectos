@@ -14,11 +14,11 @@ void Outtextxy(HDC hdc, int x, int y, tstring Msg) {
 	TextOut(hdc, x, y, Msg.c_str(), static_cast<int>(Msg.length()));
 }
 void ShowError(tstring strMsg) {
-	MessageBox(NULL, strMsg.c_str(), TEXT("Imprimir"), MB_ICONERROR);
+	MessageBox(NULL, strMsg.c_str(), TEXT("GENERAR PDF"), MB_ICONERROR);
 	exit(1);
 }
 void ShowInformation(tstring strText) {
-	MessageBox(NULL, strText.c_str(), TEXT("Imprimir"), MB_ICONINFORMATION);
+	MessageBox(NULL, strText.c_str(), TEXT("GENERAR PDF"), MB_ICONINFORMATION);
 }
 void PrintFile(tifstream& f) {
 	PRINTDLG pd;
@@ -65,9 +65,9 @@ void PrintFile(tifstream& f) {
 
 	}
 	else
-		ShowInformation(TEXT("Impresion cancelada"));
+		ShowInformation(TEXT("GENERAR PDF cancelada"));
 
-	ShowInformation(TEXT("La impresion se realizo correctamente."));
+	ShowInformation(TEXT("PDF generado correctamente."));
 }
 
 # endif

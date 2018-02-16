@@ -7,35 +7,33 @@
 *  CARRERA : INGENIERIA EN SISTEMAS E INFORMÁTICA        		*
 *  PROFESOR : ING.FERNANDO SOLIS		                		*
 *****************************************************************/
-
+/*
 # include "Nodo.h"
 # include <stdio.h>
 
 //Implementación de los métodos del Nodo
-Nodo::Nodo() {
-	dato = "";
-	ptr_siguiente = NULL;
-}
 
-Nodo::Nodo(string dato) {
-	this->dato = dato;
-}
-
-void Nodo::setDato(string dato) {
-
-	this->dato = dato;
-}
-
-string Nodo::getDato() {
-
+valor Nodo::valorNodo() {
 	return dato;
 }
 
-void Nodo::setPtr_siguiente(Nodo *ptr_siguiente) {
-	this->ptr_siguiente = ptr_siguiente;
+Nodo *Nodo::subArbolIzdo() {
+	return izdo;
 }
 
-Nodo* Nodo::getPtr_Siguiente() {
-	return ptr_siguiente;
+Nodo *Nodo::subArbolDcho() {
+	return dcho;
 }
+
+void Nodo::nuevoValor(valor d) {
+	dato = d;
+}
+
+void Nodo::ramaIzdo(Nodo * n) {
+	izdo = n;
+}
+
+void Nodo::ramaDcho(Nodo * n) {
+	dcho = n;
+}*/
 

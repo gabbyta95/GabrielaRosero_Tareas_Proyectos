@@ -1,11 +1,21 @@
-﻿  Funciones.cpp
-c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(83): warning C4018: '<': no coinciden signed/unsigned
-c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(99): warning C4018: '<': no coinciden signed/unsigned
-c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(107): warning C4018: '<': no coinciden signed/unsigned
-c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(76): warning C4101: 'auxExpresion_Infija': variable local sin referencia
-c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(292): warning C4244: 'return': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(330): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(333): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(336): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\henry\desktop\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\proyectosegundoparcial\funciones.cpp(338): warning C4715: 'operacionFunciones': no todas las rutas de acceso de control devuelven un valor
-  ProyectoSegundoParcial.vcxproj -> C:\Users\henry\Desktop\ProyectoSegundoParcial\ProyectoSegundoParcial\ProyectoSegundoParcial\Debug\ProyectoSegundoParcial.exe
+﻿  MenuOpciones.cpp
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(62): warning C4099: 'avl_node': type name first seen using 'class' now seen using 'struct'
+  c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(59): note: see declaration of 'avl_node'
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(63): warning C4099: 'avl_node': type name first seen using 'class' now seen using 'struct'
+  c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(59): note: see declaration of 'avl_node'
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(141): warning C4018: '<': signed/unsigned mismatch
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(222): warning C4101: 'i': unreferenced local variable
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(357): warning C4101: 'numerito': unreferenced local variable
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(523): warning C4018: '<': signed/unsigned mismatch
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(529): warning C4018: '<': signed/unsigned mismatch
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(543): warning C4018: '>': signed/unsigned mismatch
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(547): warning C4018: '<': signed/unsigned mismatch
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(600): warning C4018: '<': signed/unsigned mismatch
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(606): warning C4018: '<': signed/unsigned mismatch
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(667): warning C4018: '<': signed/unsigned mismatch
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(690): warning C4018: '<': signed/unsigned mismatch
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(709): warning C4018: '<': signed/unsigned mismatch
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(713): warning C4018: '<': signed/unsigned mismatch
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(722): warning C4018: '>=': signed/unsigned mismatch
+c:\users\danielarosero\downloads\proyectosegundoparcial\proyecto3erparcial\proyectosegundoparcial\proyectosegundoparcial\menuopciones.cpp(725): warning C4018: '>=': signed/unsigned mismatch
+  ProyectoSegundoParcial.vcxproj -> C:\Users\DANIELAROSERO\Downloads\ProyectoSegundoParcial\Proyecto3erParcial\ProyectoSegundoParcial\Debug\ProyectoSegundoParcial.exe

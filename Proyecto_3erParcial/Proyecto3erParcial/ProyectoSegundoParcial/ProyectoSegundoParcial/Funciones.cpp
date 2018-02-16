@@ -20,7 +20,7 @@
 # include <windows.h>
 # include <stdbool.h>
 # include "Librerias.h"
-# include "Header.h"
+
 # include <time.h>
 # include <sstream>
 # include "Funciones.h"
@@ -28,49 +28,10 @@
 # include <iostream>
 # include <sstream>
 # include "MenuOpciones.h"
-# define PI 3.1416
-using std::string;
-using std::stringstream;
-using std::ostringstream;
 using namespace std;
 
-string pf;
-string inf;
-string pref; 
-float resp; 
-
-void generarPDF() {
-	//Generar pdf
-
-	//Declaracion variables para el manejo de ficheros
-	ofstream archivo;
-	ofstream archivoP;
-	ofstream fechas;
-	limpiar();
-	ofstream fs("Datos.txt");
-	limpiar();
-	fs << "*****************************EXPRESION INGRESADA**********************************" << endl << endl;
-	fs << " La expresión es : " << endl << endl;
-
-	fs << inf;
-	fs << endl << endl;
-	fs.close();
-
-	int imp;
-	system("cls");
-	imp = AyudaF1();
-	if (imp == 1) {
-		ofstream LeerDatos;
-		LeerDatos.open("Datos.txt", ios::out | ios::app);
-		tifstream in(TEXT("Datos.txt"));
-		PrintFile(in);
-		ShellExecute(NULL, TEXT("open"), TEXT("C:\\Users\\DANIELAROSERO\\Documents\\GitHub\\GabrielaRosero_Tareas_Proyectos\\Proyecto_3erParcial\\Datos.pdf"), NULL, NULL, SW_SHOWNORMAL);
-	}
-	system("pause");
-	_getch();
 
 
-}
 int  AyudaF1() {
 	int x;
 	int imp;

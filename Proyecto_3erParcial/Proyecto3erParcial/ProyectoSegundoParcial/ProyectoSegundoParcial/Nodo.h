@@ -1,26 +1,44 @@
-
+/*
 # ifndef NODO_H
 # define NODO_H
-# include <string>
+
+#include <string>
 using namespace std;
-class Nodo {
-
+typedef int valor;
+class Nodo
+{
 private:
-	string dato;
-	Nodo *ptr_siguiente;
-
+	valor dato;
+	Nodo * izdo;
+	Nodo * dcho;
 public:
+	Nodo() {
+		dato = 0;
+		izdo = dcho = NULL;
+	}
+	Nodo(valor dat)
+	{
 
-	//Métodos
-	//constructor sin parámetros
-	Nodo();
-	Nodo(string dato);
-	void setDato(string dato);
-	string getDato();
-	void setPtr_siguiente(Nodo *ptr_siguiente);
-	Nodo* getPtr_Siguiente();
+		dato = dat;
+		izdo = dcho = NULL;
+	}
+	Nodo(Nodo* ramaIzdo, valor valor, Nodo*ramaDcho)
+	{
+		izdo = ramaIzdo;
+		dato = valor;
+		dcho = ramaDcho;
+	}
+	valor valorNodo();
+	Nodo * subArbolIzdo();
+	Nodo * subArbolDcho();
+	void nuevoValor(valor);
+	void ramaIzdo(Nodo *);
+	void ramaDcho(Nodo *);
+	~Nodo()
+	{
+	}
 };
 
 # endif
-
+*/
 

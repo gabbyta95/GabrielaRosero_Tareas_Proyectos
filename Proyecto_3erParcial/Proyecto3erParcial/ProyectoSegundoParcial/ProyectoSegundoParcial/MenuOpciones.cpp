@@ -10,7 +10,13 @@
 # include <windows.h>
 # include "MenuMouse.h"
 # include "MenuOpciones.h"
+# include "Header.h"
+#include "qrcodegen.h"
+# include "Funciones.h"
 # include <iostream>
+#include <sstream>
+#include <string>
+# include "Librerias.h"
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
@@ -24,6 +30,8 @@
 #include<allegro5\bitmap.h>
 
 using namespace std;
+static void printQr(const uint8_t qrcode[]);
+static void generarQrBasico(char dato1[]);
 
 //Implementacion función gotoxy no devuelve ningun valor.(Es de la libreria conio.h)
 //recibe las coordenas X (posición X del cursor(horizontal)) y Y ((posición Y del cursor (vertical))).
@@ -63,10 +71,10 @@ class avlTree
 public:
 	int height(avl_node *);
 	int diff(avl_node *);
-	avl_node *rr_rotation(avl_node *);
-	avl_node *ll_rotation(avl_node *);
-	avl_node *lr_rotation(avl_node *);
-	avl_node *rl_rotation(avl_node *);
+	avl_node *rr_rotacion(avl_node *);
+	avl_node *ll_rotacion(avl_node *);
+	avl_node *lr_rotacion(avl_node *);
+	avl_node *rl_rotacion(avl_node *);
 	avl_node* balance(avl_node *);
 	avl_node* insert(avl_node *, int);
 	void display(avl_node *, int);
@@ -87,13 +95,14 @@ void insertar(Nodo*&, int, Nodo*);
 void mostrararbolDigitos(Nodo *arbol, int auxY);
 void mostrarArbol(Nodo *arbol, int auxY);
 void Salida();
-
+void sololetras(char *aux1);
+string convertirCharAString(char *dato);
 int nVal;
 int nPointer;
 class node {
 public:
 	bool leaf;
-	bool isRoot;
+	bool esRaiz;
 	node *par;
 	vector<int>value;
 	vector<node*>child;
@@ -116,10 +125,10 @@ node *Root = NULL;
 queue<pNode>q;
 
 node* getTargetNode(node *tNode, int val);
-node* getNewNode(bool isLeaf, bool isRoot);
-
+node* getNuevoNodo(bool isLeaf, bool esRaiz);
+void generarPDF();
 void insertInParentNode(node *n, int kprime, node *nprime);
-void insertInLeafNode(node *leafNode, int k, node *p);
+void insertInNodoHoja(node *leafNode, int k, node *p);
 void insert2(int k, node *p);
 void valueOfNodeInBox(node* tNode);
 void bfsTraverse(node *tNode);
@@ -134,219 +143,14 @@ node* getTargetNode(node *tNode, int val) {
 	}
 	return getTargetNode(tNode->child[i], val);
 }
-node* getNewNode(bool isLeaf, bool isRoot) {
+node* getNuevoNodo(bool isLeaf, bool esRaiz) {
 	node* tmp = new node;
-	tmp->isRoot = isRoot;
+	tmp->esRaiz = esRaiz;
 	tmp->leaf = isLeaf;
 	tmp->last = NULL;
 	return tmp;
 }
 
-
-void insertInParentNode(node *n, int kprime, node *nprime) {
-	// printf("dbg: reached insertinparennode\n");
-	//
-	if (n->isRoot) {
-		Root = getNewNode(false, true);
-		n->isRoot = false;
-
-		Root->child.push_back(n);
-		Root->child.push_back(nprime);
-		Root->value.push_back(kprime);
-		n->par = Root;
-		nprime->par = Root;
-	}
-	else {
-		//printf("dbg: reached insertinparent node else\n");
-		node *p = n->par;
-
-		//printf("dbg: parent found\n");
-		//printf("dbg: content of parent\n");
-		//bfsTraverse(p);
-
-
-		int i;
-		for (i = 0; i<p->value.size(); i++) {
-			if (p->value[i]>kprime) break;
-		}
-		int tmpK;
-		node *tmpP;
-
-		for (int j = i; j<p->value.size(); j++) {
-			tmpK = p->value[j];
-			tmpP = p->child[j + 1];
-
-			p->value[j] = kprime;
-			p->child[j + 1] = nprime;
-
-			kprime = tmpK;
-			nprime = tmpP;
-		}
-		p->value.push_back(kprime);
-		p->child.push_back(nprime);
-		nprime->par = p;
-
-		//printf("dbg: reached before split\n");
-
-		//printf("\n\np->child size: %d\n\n",p->child.size());
-
-		if (p->child.size()>nPointer) {
-			node *pprime = getNewNode(false, false);
-			int nbytwoceil = (nPointer + 1) / 2;
-			int kdoubleprime = p->value[nbytwoceil - 1];
-			for (i = nbytwoceil; i<p->value.size(); i++) {
-				pprime->child.push_back(p->child[i]);
-				p->child[i]->par = pprime;
-				pprime->value.push_back(p->value[i]);
-			}
-			pprime->child.push_back(p->child[i]);
-			p->child[i]->par = pprime;
-
-
-			p->value.erase(p->value.begin() + nbytwoceil - 1, p->value.end());
-			p->child.erase(p->child.begin() + nbytwoceil, p->child.end());
-
-			insertInParentNode(p, kdoubleprime, pprime);
-		}
-	}
-
-}
-
-
-void insertInLeafNode(node *leafNode, int k, node *p) {
-	int i;
-	for (i = 0; i<leafNode->value.size(); i++) {
-		if (k<leafNode->value[i]) break;
-	}
-	int tmpK;
-	node *tmpP;
-
-	for (int j = i; j<leafNode->value.size(); j++) {
-		tmpP = leafNode->child[j];
-		tmpK = leafNode->value[j];
-
-		leafNode->child[j] = p;
-		leafNode->value[j] = k;
-
-		p = tmpP;
-		k = tmpK;
-	}
-	leafNode->child.push_back(p);
-	leafNode->value.push_back(k);
-
-}
-
-
-void insert2(int k, node *p) {
-	node *leafNode;
-	if (Root == NULL) {
-		Root = getNewNode(true, true);
-		leafNode = Root;
-	}
-	else leafNode = getTargetNode(Root, k);
-
-	//printf("dbg: target node content:\n");
-	//if(leafNode->value.size()>0) bfsTraverse(leafNode);
-
-	int keyValueCount = leafNode->value.size();
-	if (keyValueCount<nVal) insertInLeafNode(leafNode, k, p);
-	else {
-
-		//printf("dbg: reached in else1\n");
-		node* leafNode2 = getNewNode(true, false);
-		insertInLeafNode(leafNode, k, p);
-
-		//printf("dbg: inserted in leaf node\n");
-		// printf("dbg: content\n");
-		//bfsTraverse(leafNode);
-
-		leafNode2->last = leafNode->last;
-		leafNode2->par = leafNode->par;
-
-		leafNode->last = leafNode2;
-		int nbytwoceil = (nPointer + 1) / 2;
-
-		for (int i = nbytwoceil; i<nPointer; i++) {
-			leafNode2->child.push_back(leafNode->child[i]);
-			leafNode2->value.push_back(leafNode->value[i]);
-		}
-		leafNode->value.erase(leafNode->value.begin() + nbytwoceil, leafNode->value.end());
-		leafNode->child.erase(leafNode->child.begin() + nbytwoceil, leafNode->child.end());
-
-		//printf("dbg: leafnode split complete\n");
-		//printf("dbg: leafnode1 content:\n");
-		// bfsTraverse(leafNode);
-		//printf("dbg: leafnode2 content:\n");
-		//bfsTraverse(leafNode2);
-
-		int kprime = leafNode2->value[0];
-		insertInParentNode(leafNode, kprime, leafNode2);
-	}
-}
-void valueOfNodeInBox(node* tNode) {
-	printf(" [");
-	int i;
-	for (i = 0; i<tNode->value.size() - 1; i++) {
-		printf("%d|", tNode->value[i]);
-	}
-	if (tNode->value.size()>0) printf("%d]", tNode->value[i]);
-	//printf(" ");
-}
-
-
-
-
-void bfsTraverse(node *tNode) {
-
-	q.push(pNode(tNode, true));
-	while (!q.empty()) {
-		pNode p = q.front();
-		//printf("  Got pNode ");
-		node *temp = p.tNode;
-		q.pop();
-		valueOfNodeInBox(temp);
-		//printf(" printed temp ");
-		if (p.nl) printf("\n");
-		int i;
-		if (!temp->leaf) {
-			for (i = 0; i<temp->child.size() - 1; i++) {
-				q.push(pNode(temp->child[i], false));
-			}
-			//printf(" inserted second last child  ");
-			if (p.nl) q.push(pNode(temp->child[i], true));
-			else q.push(pNode(temp->child[i], false));
-			//printf(" inserted  last child  ");
-		}
-
-	}
-}
-
-
-
-
-bool tooFewEntry(node *N) {
-
-	if (N->leaf) {
-		int minV = nPointer / 2;
-		if (N->value.size()<minV) return true;
-	}
-	else {
-		int minC = (nPointer + 1) / 2;
-		if (N->child.size()<minC) return true;
-	}
-	return false;
-}
-
-
-
-bool isCoalesce(node *N, node *Nprime) {
-	if (N->leaf) {
-		if (nVal >= (N->value.size() + Nprime->value.size())) return true;
-		return false;
-	}
-	if (nPointer >= (N->child.size() + Nprime->child.size())) return true;
-	return false;
-}
 //CREAR NODO
 
 void gotoxy(int x, int y) {
@@ -365,6 +169,7 @@ void gotoxy(int x, int y) {
 											  //búfer de pantalla de consola especificado.
 }
 
+string inf;
 //INSERTAR ARBOL BINARIO
 void insertar(Nodo *&arbol, int n, Nodo *padre) {
 	if (arbol == NULL) {
@@ -381,6 +186,7 @@ void insertar(Nodo *&arbol, int n, Nodo *padre) {
 		}
 
 	}
+	
 }
 int auxX = 0;//Variable publica.
 			 //MOSTRAR ALLEGRO
@@ -451,172 +257,38 @@ void preorden(Nodo *arbol) {
 	preorden(arbol->der);
 }
 void inorden(Nodo *arbol) {
+	
 	if (arbol == NULL) {
 		return;
 	}
 	else {
 		inorden(arbol->izq);
-		cout << arbol->dato << " ";
+		cout << arbol->dato << " ";		
 		inorden(arbol->der);
 	}
+
+	
+	
 }
 void posorden(Nodo *arbol) {
+	std::stringstream st;
 	if (arbol == NULL) {
 		return;
 	}
 	else {
 		posorden(arbol->izq);
 		posorden(arbol->der);
-		cout << arbol->dato << " ";
+		cout << arbol->dato << " ";		
 	}
+	st << arbol->dato;
+	std::string numberAsString(st.str());
+	inf = numberAsString;
 }
-//ABOLES AVL
-int avlTree::height(avl_node *temp)
-{
-	int h = 0;
-	if (temp != NULL)
-	{
-		int l_height = height(temp->left);
-		int r_height = height(temp->right);
-		int max_height = max(l_height, r_height);
-		h = max_height + 1;
-	}
-	return h;
-}
-
-int avlTree::diff(avl_node *temp)
-{
-	int l_height = height(temp->left);
-	int r_height = height(temp->right);
-	int b_factor = l_height - r_height;
-	return b_factor;
-}
-
-
-avl_node *avlTree::rr_rotation(avl_node *parent)
-{
-	avl_node *temp;
-	temp = parent->right;
-	parent->right = temp->left;
-	temp->left = parent;
-	return temp;
-}
-
-avl_node *avlTree::ll_rotation(avl_node *parent)
-{
-	avl_node *temp;
-	temp = parent->left;
-	parent->left = temp->right;
-	temp->right = parent;
-	return temp;
-}
-
-avl_node *avlTree::lr_rotation(avl_node *parent)
-{
-	avl_node *temp;
-	temp = parent->left;
-	parent->left = rr_rotation(temp);
-	return ll_rotation(parent);
-}
-
-avl_node *avlTree::rl_rotation(avl_node *parent)
-{
-	avl_node *temp;
-	temp = parent->right;
-	parent->right = ll_rotation(temp);
-	return rr_rotation(parent);
-}
-
-avl_node *avlTree::balance(avl_node *temp)
-{
-	int bal_factor = diff(temp);
-	if (bal_factor > 1)
-	{
-		if (diff(temp->left) > 0)
-			temp = ll_rotation(temp);
-		else
-			temp = lr_rotation(temp);
-	}
-	else if (bal_factor < -1)
-	{
-		if (diff(temp->right) > 0)
-			temp = rl_rotation(temp);
-		else
-			temp = rr_rotation(temp);
-	}
-	return temp;
-}
-
-avl_node *avlTree::insert(avl_node *raiz, int value)
-{
-	if (raiz == NULL)
-	{
-		raiz = new avl_node;
-		raiz->data = value;
-		raiz->left = NULL;
-		raiz->right = NULL;
-		return raiz;
-	}
-	else if (value < raiz->data)
-	{
-		raiz->left = insert(raiz->left, value);
-		raiz = balance(raiz);
-	}
-	else if (value >= raiz->data)
-	{
-		raiz->right = insert(raiz->right, value);
-		raiz = balance(raiz);
-	}
-	return raiz;
-}
-
-void avlTree::display(avl_node *ptr, int level)
-{
-	int i;
-	if (ptr != NULL)
-	{
-		display(ptr->right, level + 1);
-		printf("\n");
-		if (ptr == raiz)
-			cout << "Root -> ";
-		for (i = 0; i < level && ptr != raiz; i++)
-			cout << "        ";
-		cout << "[" << ptr->data << "]";
-		display(ptr->left, level + 1);
-	}
-}
-
-void avlTree::inorder(avl_node *tree)
-{
-	if (tree == NULL)
-		return;
-	inorder(tree->left);
-	cout << tree->data << "  ";
-	inorder(tree->right);
-}
-
-void avlTree::preorder(avl_node *tree)
-{
-	if (tree == NULL)
-		return;
-	cout << tree->data << "  ";
-	preorder(tree->left);
-	preorder(tree->right);
-
-}
-
-void avlTree::postorder(avl_node *tree)
-{
-	if (tree == NULL)
-		return;
-	postorder(tree->left);
-	postorder(tree->right);
-	cout << tree->data << "  ";
-}
-
+bool banderaNumero;
 //MENU
 
 void menuOpciones() {
+	string aux1;
 	nVal = 3;
 	nPointer = 4;
 	int opcion;
@@ -632,8 +304,14 @@ void menuOpciones() {
 		return;
 	}
 	int n = 0;
+	int cont = 0;
 	int o = 0;
+	char **num = (char**)malloc(20 * sizeof(char*));
+	for (int j = 0; j<20; j++) {
+		*(&(*num) + j) = (char *)malloc(20 * sizeof(char*));
+	}
 	//int opcion = 0;
+	cont++;
 	avlTree avl;
 	bool bandera = false;
 	do {
@@ -667,20 +345,30 @@ void menuOpciones() {
 		gotoxy(15, 18);
 		cout << "  SALIR \n";
 
-
+		ifstream fe("datos.txt");
+		string cadena;
+		string cadenaT;
 		opcion = menuMouse();
 		system("cls");
 		switch (opcion) {
 
 
 		case 1:
-			cout << "\nDigite Numero: "; cin >> n;
+			int numerito;
+			cout << "\nDigite Numero: ";
+			//cin >> n;
+			sololetras(*(&(*num) + cont));
+			aux1= convertirCharAString(*(&(*num) + cont));
+			n = atoi(aux1.c_str());
 			insertar(arbol, n, NULL);
 			raiz = avl.insert(raiz, n);
 			insert2(n, NULL);
 			gotoxy(25, 25);
 			system("pause");
 			bandera = true;
+		//	cout << "\nDigite Numero: "; 
+		//	cin >> n;
+			//soloNumeros(n);			
 			break;
 		case 2:
 			cout << "\t\tGRAFICAR ARBOL\n";
@@ -737,12 +425,19 @@ void menuOpciones() {
 			break;
 		case 7:
 			//QR
-			gotoxy(25, 25);
+			while (!fe.eof()) {
+				fe >> cadena;
+				cadenaT = cadenaT + cadena + " ";
+			}
+			fe.close();
+			generarQrBasico(convertirStringAChar(cadenaT));
+			//gotoxy(25, 25);
 			system("pause");
 			bandera = true;
 			break;
 		case 8:
 			//PDF
+			generarPDF();
 			gotoxy(25, 25);
 			system("pause");
 			bandera = true;
@@ -777,6 +472,403 @@ void menuOpciones() {
 
 	} while (bandera != false);
 }
+string convertirCharAString(char *dato) {
+	string auxDato = dato;
+	return auxDato;
+}
+void sololetras(char *aux1) {
+	/*me recibe la direccion de lo que estoy escribiendo*/
+	int i = 0;
+	while (aux1[i] != 13)//13 es el ascii de enter
+								/*no acepta nombres que sean menores a tres letras*/
+	{
+		aux1[i] = _getch();//valida letra por letra
+						   /* solo me acepta letras mayusculas y minusculas*/
+		if ( (aux1[i] >= 48 && aux1[i] <= 57) && i<10)
+		{
+			printf("%c", aux1[i]);
+			i++;
+		}
+		else if (aux1[i] == 8 && i>0)
+		{
+			putchar(8);/*me imprime un retroceso*/
+			putchar(' ');
+			putchar(8);
+			i--;/*baja el tamaño de la palabra*/
+				/* es para poder borrar*/
+		}
+
+	}
+	aux1[i] = '\0';//cuando ya acaba la palabra
+}
+void insertInParentNode(node *n, int kprime, node *nprime) {
+
+	if (n->esRaiz) {
+		Root = getNuevoNodo(false, true);
+		n->esRaiz = false;
+
+		Root->child.push_back(n);
+		Root->child.push_back(nprime);
+		Root->value.push_back(kprime);
+		n->par = Root;
+		nprime->par = Root;
+	}
+	else {
+	
+		node *p = n->par;
+
+
+
+		int i;
+		for (i = 0; i<p->value.size(); i++) {
+			if (p->value[i]>kprime) break;
+		}
+		int tmpK;
+		node *tmpP;
+
+		for (int j = i; j<p->value.size(); j++) {
+			tmpK = p->value[j];
+			tmpP = p->child[j + 1];
+
+			p->value[j] = kprime;
+			p->child[j + 1] = nprime;
+
+			kprime = tmpK;
+			nprime = tmpP;
+		}
+		p->value.push_back(kprime);
+		p->child.push_back(nprime);
+		nprime->par = p;
+
+		if (p->child.size()>nPointer) {
+			node *pprime = getNuevoNodo(false, false);
+			int nbytwoceil = (nPointer + 1) / 2;
+			int kdoubleprime = p->value[nbytwoceil - 1];
+			for (i = nbytwoceil; i<p->value.size(); i++) {
+				pprime->child.push_back(p->child[i]);
+				p->child[i]->par = pprime;
+				pprime->value.push_back(p->value[i]);
+			}
+			pprime->child.push_back(p->child[i]);
+			p->child[i]->par = pprime;
+
+
+			p->value.erase(p->value.begin() + nbytwoceil - 1, p->value.end());
+			p->child.erase(p->child.begin() + nbytwoceil, p->child.end());
+
+			insertInParentNode(p, kdoubleprime, pprime);
+		}
+	}
+
+}
+void generarPDF() {
+	//Generar pdf
+
+	//Declaracion variables para el manejo de ficheros
+	ofstream archivo;
+	ofstream archivoP;
+	ofstream fechas;
+	limpiar();
+	ofstream fs("Datos.txt");
+	limpiar();
+	fs << "**********************EXPRESION INGRESADA*******************" << endl << endl;
+	fs << " La expresión ingresada fue : " << endl << endl;
+	fs << inf << endl;
+	fs.close();
+
+	int imp;
+	system("cls");
+	imp = AyudaF1();
+	if (imp == 1) {
+		ofstream LeerDatos;
+		LeerDatos.open("Datos.txt", ios::out | ios::app);
+		tifstream in(TEXT("Datos.txt"));
+		PrintFile(in);
+		ShellExecute(NULL, TEXT("open"), TEXT("C:\\Users\\DANIELAROSERO\\Documents\\GitHub\\GabrielaRosero_Tareas_Proyectos\\Proyecto_3erParcial\\Datos.pdf"), NULL, NULL, SW_SHOWNORMAL);
+	}
+	system("pause");
+	_getch();
+
+
+}
+
+
+
+void insertInNodoHoja(node *leafNode, int k, node *p) {
+	int i;
+	for (i = 0; i<leafNode->value.size(); i++) {
+		if (k<leafNode->value[i]) break;
+	}
+	int tmpK;
+	node *tmpP;
+
+	for (int j = i; j<leafNode->value.size(); j++) {
+		tmpP = leafNode->child[j];
+		tmpK = leafNode->value[j];
+
+		leafNode->child[j] = p;
+		leafNode->value[j] = k;
+
+		p = tmpP;
+		k = tmpK;
+	}
+	leafNode->child.push_back(p);
+	leafNode->value.push_back(k);
+
+}
+
+
+void insert2(int k, node *p) {
+	node *leafNode;
+	if (Root == NULL) {
+		Root = getNuevoNodo(true, true);
+		leafNode = Root;
+	}
+	else leafNode = getTargetNode(Root, k);
+
+	//printf("dbg: target node content:\n");
+	//if(leafNode->value.size()>0) bfsTraverse(leafNode);
+
+	int keyValueCount = leafNode->value.size();
+	if (keyValueCount<nVal) insertInNodoHoja(leafNode, k, p);
+	else {
+
+		//printf("dbg: reached in else1\n");
+		node* leafNode2 = getNuevoNodo(true, false);
+		insertInNodoHoja(leafNode, k, p);
+
+		//printf("dbg: inserted in leaf node\n");
+		// printf("dbg: content\n");
+		//bfsTraverse(leafNode);
+
+		leafNode2->last = leafNode->last;
+		leafNode2->par = leafNode->par;
+
+		leafNode->last = leafNode2;
+		int nbytwoceil = (nPointer + 1) / 2;
+
+		for (int i = nbytwoceil; i<nPointer; i++) {
+			leafNode2->child.push_back(leafNode->child[i]);
+			leafNode2->value.push_back(leafNode->value[i]);
+		}
+		leafNode->value.erase(leafNode->value.begin() + nbytwoceil, leafNode->value.end());
+		leafNode->child.erase(leafNode->child.begin() + nbytwoceil, leafNode->child.end());
+
+
+
+		int kprime = leafNode2->value[0];
+		insertInParentNode(leafNode, kprime, leafNode2);
+	}
+}
+void valueOfNodeInBox(node* tNode) {
+	printf(" [");
+	int i;
+	for (i = 0; i<tNode->value.size() - 1; i++) {
+		printf("%d|", tNode->value[i]);
+	}
+	if (tNode->value.size()>0) printf("%d]", tNode->value[i]);
+	//printf(" ");
+}
+
+
+
+
+void bfsTraverse(node *tNode) {
+
+	q.push(pNode(tNode, true));
+	while (!q.empty()) {
+		pNode p = q.front();
+		//printf("  Got pNode ");
+		node *temp = p.tNode;
+		q.pop();
+		valueOfNodeInBox(temp);
+		//printf(" printed temp ");
+		if (p.nl) printf("\n");
+		int i;
+		if (!temp->leaf) {
+			for (i = 0; i<temp->child.size() - 1; i++) {
+				q.push(pNode(temp->child[i], false));
+			}
+			//printf(" inserted second last child  ");
+			if (p.nl) q.push(pNode(temp->child[i], true));
+			else q.push(pNode(temp->child[i], false));
+			//printf(" inserted  last child  ");
+		}
+
+	}
+}
+
+
+
+
+bool tooFewEntry(node *N) {
+
+	if (N->leaf) {
+		int minV = nPointer / 2;
+		if (N->value.size()<minV) return true;
+	}
+	else {
+		int minC = (nPointer + 1) / 2;
+		if (N->child.size()<minC) return true;
+	}
+	return false;
+}
+
+
+
+bool isCoalesce(node *N, node *Nprime) {
+	if (N->leaf) {
+		if (nVal >= (N->value.size() + Nprime->value.size())) return true;
+		return false;
+	}
+	if (nPointer >= (N->child.size() + Nprime->child.size())) return true;
+	return false;
+}
+
+//ABOLES AVL
+int avlTree::height(avl_node *temp)
+{
+	int h = 0;
+	if (temp != NULL)
+	{
+		int l_height = height(temp->left);
+		int r_height = height(temp->right);
+		int max_height = max(l_height, r_height);
+		h = max_height + 1;
+	}
+	return h;
+}
+
+int avlTree::diff(avl_node *temp)
+{
+	int l_height = height(temp->left);
+	int r_height = height(temp->right);
+	int b_factor = l_height - r_height;
+	return b_factor;
+}
+
+
+avl_node *avlTree::rr_rotacion(avl_node *parent)
+{
+	avl_node *temp;
+	temp = parent->right;
+	parent->right = temp->left;
+	temp->left = parent;
+	return temp;
+}
+
+avl_node *avlTree::ll_rotacion(avl_node *parent)
+{
+	avl_node *temp;
+	temp = parent->left;
+	parent->left = temp->right;
+	temp->right = parent;
+	return temp;
+}
+
+avl_node *avlTree::lr_rotacion(avl_node *parent)
+{
+	avl_node *temp;
+	temp = parent->left;
+	parent->left = rr_rotacion(temp);
+	return ll_rotacion(parent);
+}
+
+avl_node *avlTree::rl_rotacion(avl_node *parent)
+{
+	avl_node *temp;
+	temp = parent->right;
+	parent->right = ll_rotacion(temp);
+	return rr_rotacion(parent);
+}
+
+avl_node *avlTree::balance(avl_node *temp)
+{
+	int bal_factor = diff(temp);
+	if (bal_factor > 1)
+	{
+		if (diff(temp->left) > 0)
+			temp = ll_rotacion(temp);
+		else
+			temp = lr_rotacion(temp);
+	}
+	else if (bal_factor < -1)
+	{
+		if (diff(temp->right) > 0)
+			temp = rl_rotacion(temp);
+		else
+			temp = rr_rotacion(temp);
+	}
+	return temp;
+}
+
+avl_node *avlTree::insert(avl_node *raiz, int value)
+{
+	if (raiz == NULL)
+	{
+		raiz = new avl_node;
+		raiz->data = value;
+		raiz->left = NULL;
+		raiz->right = NULL;
+		return raiz;
+	}
+	else if (value < raiz->data)
+	{
+		raiz->left = insert(raiz->left, value);
+		raiz = balance(raiz);
+	}
+	else if (value >= raiz->data)
+	{
+		raiz->right = insert(raiz->right, value);
+		raiz = balance(raiz);
+	}
+	return raiz;
+}
+
+void avlTree::display(avl_node *ptr, int level)
+{
+	int i;
+	if (ptr != NULL)
+	{
+		display(ptr->right, level + 1);
+		printf("\n");
+		if (ptr == raiz)
+			cout << "Raiz -> ";
+		for (i = 0; i < level && ptr != raiz; i++)
+			cout << "        ";
+		cout << "[" << ptr->data << "]";
+		display(ptr->left, level + 1);
+	}
+}
+
+void avlTree::inorder(avl_node *tree)
+{
+	if (tree == NULL)
+		return;
+	inorder(tree->left);
+	cout << tree->data << "  ";
+	inorder(tree->right);
+}
+
+void avlTree::preorder(avl_node *tree)
+{
+	if (tree == NULL)
+		return;
+	cout << tree->data << "  ";
+	preorder(tree->left);
+	preorder(tree->right);
+
+}
+
+void avlTree::postorder(avl_node *tree)
+{
+	if (tree == NULL)
+		return;
+	postorder(tree->left);
+	postorder(tree->right);
+	cout << tree->data << "  ";
+}
+
 
 
 void Salida() {
@@ -796,4 +888,26 @@ void Salida() {
 	} while (i <= 100);
 	cout << endl << "\n\t\tGRACIAS POR USAR EL PROGRAMA" << endl;
 	system("COLOR F0"); //Hace blanco el fondo
+}
+static void generarQrBasico(char dato1[]) {
+	char *dato = dato1;  // User-supplied text
+	enum qrcodegen_Ecc errCorLvl = qrcodegen_Ecc_LOW;  // Error correction level
+
+													   // Make and print the QR Code symbol
+	uint8_t qrcode[qrcodegen_BUFFER_LEN_MAX];
+	uint8_t tempBuffer[qrcodegen_BUFFER_LEN_MAX];
+	bool ok = qrcodegen_encodeText(dato, tempBuffer, qrcode, errCorLvl,
+		qrcodegen_VERSION_MIN, qrcodegen_VERSION_MAX, qrcodegen_Mask_AUTO, true);
+	if (ok)
+		printQr(qrcode);
+}
+static void printQr(const uint8_t qrcode[]) {
+	int size = qrcodegen_getSize(qrcode);
+	int border = 4;
+	for (int y = -border; y < size + border; y++) {
+		for (int x = -border; x < size + border; x++) {
+			fputs((qrcodegen_getModule(qrcode, x, y) ? "\333\333" : "  "), stdout);
+		}
+		fputs("\n", stdout);
+	}
 }
